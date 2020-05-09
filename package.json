@@ -1,0 +1,20 @@
+{
+  "name": "flask-react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "0.9.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "start-api": "cd api && flask run --no-debugger",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "test-api": "cd api && flask test",
+    "eject": "react-scripts eject"
+  },
+  "proxy":"http://localhost:5000"
+}
