@@ -1,18 +1,37 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, setState} from 'react';
+import './css/main.scss';
+import Stepper from './Components/Stepper';
+import SequnceForm from './Components/SequenceForm';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
 
 class App extends Component {
   render() {
+
+    const fetchData = async () => {
+    const response = await fetch("http://localhost:3000/",
+    {
+        method:"POST",
+        headers:{
+        "Accept":"application/json, text/plain",
+        "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            "sequence":"ABDHJFVJZDIÖUFÖD",
+            "jobID":34})
+    })
+    const data = await response.json();
+    console.log(data)
+  }
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <div>
+        <Header />
+        <div className="content">
+          <Stepper />
+          <SequnceForm />
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Footer/>
       </div>
     );
   }

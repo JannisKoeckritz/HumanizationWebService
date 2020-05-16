@@ -1,0 +1,26 @@
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+}
+  
+  .image-cropper {
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; }
+  
+  .img-loader {
+    display: inline;
+    margin: 30% auto;
+    height: 40%;
+    background-color: transparent;
+    border-radius: 50%;
+    animation: spin 1.5s ease-in-out infinite; }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg); }
+    to {
+      transform: rotate(360deg); } }

@@ -1,0 +1,50 @@
+.footer {
+    height: 3rem;
+    font-family: "Monserrat", sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:var(--color-1);
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: stretch;
+    flex-wrap: nowrap;
+    padding: 0.5rem;
+
+    &__copyright {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    &__links {
+    list-style: none;
+    min-width: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    li {
+        display: inline-block;
+        padding: 0.2rem 1rem;
+
+        a {
+            color: white;
+            text-decoration: none;
+
+        }
+
+    }
+    }
+}
