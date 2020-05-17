@@ -24,10 +24,10 @@ function getSteps() {
   return ['Enter sequence', 'Analyze sequence','Choose template', 'Export'];
 }
 
-function getStepContent(step) {
+function getStepContent(step, item) {
   switch (step) {
     case 0:
-      return 'Enter your sequence';
+      return item;
     case 1:
       return 'Analyze your sequence';
     case 2:
@@ -39,7 +39,7 @@ function getStepContent(step) {
   }
 }
 
-export default function HorizontalLinearStepper() {
+ const progressBar = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -122,7 +122,7 @@ export default function HorizontalLinearStepper() {
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+            {getStepContent(activeStep,props.form)}
             <div>
               <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                 Back
@@ -153,3 +153,4 @@ export default function HorizontalLinearStepper() {
     </div>
   );
 }
+export default progressBar;

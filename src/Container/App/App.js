@@ -1,9 +1,8 @@
 import React, { Component, setState} from 'react';
-import './css/main.scss';
-import Stepper from './Components/Stepper';
-import SequnceForm from './Components/SequenceForm';
-import Header from './Components/Header';
-import Footer from './Components/Footer';
+import Progress from '../../Components/Progress/Progress';
+import SequnceForm from '../../Components/Forms/SequenceInput';
+import Header from '../../Components/Header/Header';
+import Footer from '../../Components/Footer/Footer';
 
 class App extends Component {
   render() {
@@ -27,9 +26,10 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <div className="content">
-          <Stepper />
-          <SequnceForm />
+        <div className="contentContainer">
+          <Progress 
+            form={<SequnceForm/>}
+          />
         </div>
         <Footer/>
       </div>

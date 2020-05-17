@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import abIcon from '../img/medical.svg'
-import dbIcon from '../img/SVG/database.svg';
-import codeIcon from '../img/SVG/code.svg';
+import abIcon from '../../img/medical.svg'
+import dbIcon from '../../img/SVG/database.svg';
+import codeIcon from '../../img/SVG/code.svg';
 
-export default class Header extends Component {
-    render(){
+ const header = () => {
         return(
             <header className="header">
                 <div className="header__title">
@@ -19,5 +18,6 @@ export default class Header extends Component {
                     </ul>
             </header>
         )
-    }
 }
+
+export default header;

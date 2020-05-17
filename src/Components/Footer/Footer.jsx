@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-export default class Footer extends Component {
-    render(){
+ const footer = () => {
         return(
             <footer className="footer">
                     <p className="footer__copyright">&copy; 2020 Institute of Computational Biology (ICB) at Helmholtz Zentrum München</p>
@@ -11,5 +10,6 @@ export default class Footer extends Component {
                     </ul>
             </footer>
         )
-    }
 }
+
+export default footer;

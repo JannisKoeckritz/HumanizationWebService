@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import Spinner from './Loading'
-import TableItem from './TableItem';
-import Results from './Results';
-
-const mystyles = makeStyles((theme)=> ({
-    input: {
-        width: '90%',
-        margin: '20px'
-    }
-}));
+import Spinner from '../Loading/Loading'
+import ResultItem from '../Results/ResultItem';
+import Results from '../Results/Results';
 
 export default class SequnceForm extends Component {
     constructor(props){
@@ -20,7 +11,7 @@ export default class SequnceForm extends Component {
             isfetching:false,
             sendRequest:false,
             jobId:"34",
-            seq: "message",
+            seq: "",
             data:null
         }
     }
@@ -60,25 +51,18 @@ export default class SequnceForm extends Component {
 
     render(){
 
-    // let arrayData = null;
-    // if(this.state.dataRecieved){
-    //     let new_ds = this.state.data.map((entry,index) => {amino_acid:entry.amino_acid         
-    //     })
-    // }
-
     let loadingBanner = null;
     if(this.state.isfetching){
         loadingBanner = <Spinner />
         return loadingBanner
     }
 
-    let results = (<div style={{backgroundColor:"red"}}><TableItem amino_acid={"No results"} /></div>);
+    let results = null;
     if(this.state.data){
-        //console.log("Rendering results", this.state.data)
         results = (
             <Results>
-                {this.state.data.map(entry => {
-                    return <TableItem amino_acid={entry.amino_acid} />
+                {this.state.data.map((entry, index) => {
+                    return <ResultItem key={index} data={entry} />
                 })}
             </Results>
         );
@@ -87,7 +71,7 @@ export default class SequnceForm extends Component {
     let searchInput = null;
     if(!this.state.sendRequest){
         searchInput = (
-            <div>
+            <div className="searchContainer">
             <TextField
                 ref={(el) => { this.seq = el; }}
                 onChange={(seq) => this.setState({seq})}
@@ -97,20 +81,20 @@ export default class SequnceForm extends Component {
                     this.setState({ seq: value })
                 }}
                 id="outlined-multiline-static"
-                label="Protein sequence"
+                label="Input your protein sequence here ..."
                 multiline
+                className="searchInput"
                 rows={8}
-                style={{width:"90%"}}
                 variant="outlined"
-        />
-        <Button onClick={() => {this.onSubmit()}}>SUBMIT</Button>
+        /><br/>
+        <button className="btn" onClick={() => {this.onSubmit()}}>SUBMIT</button>
         </div>
         )
         return searchInput
     }
 
     return (
-    <div className='container'>
+    <div>
         {searchInput}
         {loadingBanner}
         {results}

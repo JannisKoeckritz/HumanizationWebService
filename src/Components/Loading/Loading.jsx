@@ -1,7 +1,7 @@
 import React from 'react';
-import ab from '../img/ab.png'
+import ab from '../../img/ab.png'
 
- const Loading = () => {
+ const loading = () => {
         return(<div>
             <div className="image-cropper">
                 <img src={ab} className="img-loader"/>
@@ -10,4 +10,4 @@ import ab from '../img/ab.png'
             </div>
         )}
 
-export default Loading;
+export default loading;
