@@ -1,5 +1,13 @@
 @import "base";
 @import "../Components/Header/Header.scss";
+@import "../Components//Forms/Forms.scss";
+@import "../Components/Loading/Loadings.scss";
+@import "../Components/Progress/Progress.scss";
+@import "../Components/Results/Results.scss";
+@import "../Components/ServiceNavigation/ServiceNavigation.scss";
+@import "../Components/Settings/Settings.scss";
+@import "../Components/MetaView/MetaView.scss";
 @import "../Container/App/App.scss";
 @import "../Components/Footer/Footer.scss";
 @import "typography";
+@import "../../node_modules/react-vis/dist/style";

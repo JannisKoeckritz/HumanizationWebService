@@ -20,7 +20,7 @@
     --color-4: #FF5733;
     --color-5: #C70039;
     --color-6: #900C3F;
-    --grey-1: 	#C8C8C8;
+    --grey-1: 	rgb(225, 225, 225);
     --grey-2: #484848;
     --grey-3: #404040;
 
@@ -30,7 +30,9 @@
     //   background-image: linear-gradient(to right bottom, #fff, var(--color-primary));
     //   background-repeat: no-repeat;  
     line-height: 1.6;
+    font-family: 'Monserrat', sans-serif;
     font-weight: 400;
+    font-size: 1rem;
     min-height: 100vh;
     }
 

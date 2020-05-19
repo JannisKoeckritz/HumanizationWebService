@@ -1,0 +1,22 @@
+.MuiStepIcon-active {
+    circle {
+        fill: var(--color-1);   
+    }
+    
+}
+
+.MuiStepIcon-root.MuiStepIcon-completed {
+    color: var(--color-1) !important; 
+}
+
+// .navigationButtonContainer {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+//     margin-top: 30px;
+    
+//     button {
+//         min-width: 200px;;
+//     }
+// }

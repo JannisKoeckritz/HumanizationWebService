@@ -1,32 +1,55 @@
-import React from 'react';
-
-const colormap = {
-    "A": "#f44336",
-    "C": "#e91e63",
-    "D": "#9c27b0",
-    "E": "#673ab7",
-    "F": "#3f51b5",
-    "G": "#2196f3",
-    "H": "#03a9f4",
-    "I": "#00bcd4",
-    "K": "#009688",
-    "L": "#4caf50",
-    "M": "#8bc34a",
-    "N": "#cddc39",
-    "P": "#ffeb3b",
-    "Q": "#ffc107",
-    "R": "#ff9800",
-    "S": "#ff5722",
-    "T": "#795548", 
-    "V": "#607d8b",
-    "W": "#A4DD00",
-    "Y": "#68CCCA"}
+import React, {useState} from 'react';
+import colormap from '../../assets/colors';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover'
+import ColumnChart from '../ColumnChart/ColumnChart'
+import valid_amino_acids from '../../data/iupac'
 
 
 const resultItem = (props) => {
+    const [mouseIsEntered, setMouseEntered] = useState(false);
+    const [visibility, setVisibility] = useState("hidden");
+    //console.log(colormap[2][props.data.amino_acid])
+    const currentColor = colormap[props.colorTheme][props.data.amino_acid]
+
+    const translateAA = (aa) => {
+        return valid_amino_acids[aa]
+    }
+
+    const mouseEnter = () => {
+        console.log("Mouse entered Item -> key:", props.index)
+        setMouseEntered(true);
+        setVisibility("visible");
+    }
+
+    const mouseLeave = () => {
+        console.log("Mouse leaved Item -> key:", props.index)
+        setMouseEntered(false);
+        setVisibility("hidden");
+    }
+
     return(
-        <div className="result__item">
-           <div className="result__item__aa" style={{backgroundColor:colormap[props.data.amino_acid]}}>
+        <OverlayTrigger
+            trigger="hover"
+            placement="auto"
+            overlay={
+                <Popover id={`popover-${props.index}`}>
+                    <div style={{backgroundColor:"white", border:"1px solid black", padding:"10px"}}>
+                    <Popover.Title as="h3">{props.data.pos} - {props.data.amino_acid} <small> ({translateAA(props.data.amino_acid)})</small></Popover.Title>
+                    <Popover.Content>
+                        <ColumnChart 
+                            chain={props.meta.chain} 
+                            aa={props.data.amino_acid} 
+                            position={props.data.pos}
+                            annotationScheme={props.annotationScheme}/>
+                    </Popover.Content>
+                    </div>
+
+                </Popover>
+            }>
+
+        <div className="result__item" >
+           <div className="result__item__aa" style={{backgroundColor:currentColor}}>
                <b>{props.data.amino_acid}</b>
            </div>
            <div className="result__item__pos">
@@ -35,7 +58,8 @@ const resultItem = (props) => {
            <div className="result__item__freq">
                 {props.data.frequency}
            </div>
-        </div>);
+        </div>
+        </OverlayTrigger>);
 
 
 

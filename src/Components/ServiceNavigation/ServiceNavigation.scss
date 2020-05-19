@@ -1,0 +1,42 @@
+.serviceNav{
+    &__container{
+        width:100%;
+        padding-bottom: 150px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.btn__service{
+    &__next{
+        float:right;
+    }
+    &__back{
+        float: left
+    }
+
+}
+
+.btn-simple {
+    border: 1px solid var(--color-1);
+    border-radius: 5px;
+	font-family: 'Lato';
+	font-size: inherit;
+	color: var(--color-1);
+	background-color: white;
+	cursor: pointer;
+	padding: 5px;
+	display: inline-block;
+	margin: 10px 0px;;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    text-align: center;
+	font-weight: 700;
+    outline: none;
+    transition: all .2s;
+    &:hover{
+     color:white;
+     background-color: var(--color-1);
+    }
+}

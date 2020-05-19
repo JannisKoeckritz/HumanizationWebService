@@ -1,0 +1,36 @@
+
+///////////////////////////// SEARCH ////////////////////
+
+.searchContainer {
+    //max-width: 1500px;
+    margin: 20px 0;
+}
+
+.searchInput {
+    width: 100%;
+    min-width: 250px;
+}
+
+.btn {
+    border: 1px solid var(--color-1);
+    border-radius: 5px;
+	font-family: 'Lato';
+	font-size: inherit;
+	color: var(--color-1);
+	background-color: white;
+	cursor: pointer;
+	padding: 15px;
+	display: inline-block;
+	margin: 10px 0px;;
+	text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+	font-weight: 700;
+    outline: none;
+    float: right;
+    transition: all .2s;
+    &:hover{
+     color:white;
+     background-color: var(--color-1);
+    }
+}

@@ -2,11 +2,14 @@ import React from 'react';
 import ab from '../../img/ab.png'
 
  const loading = () => {
-        return(<div>
-            <div className="image-cropper">
-                <img src={ab} className="img-loader"/>
-            </div>
-            <p>Loading...</p>
+        return(
+            <div className="loader-container">
+                <div className="loader-box" >
+                    <div className="loader-cropper">
+                        <img alt="Spinning antibody" src={ab} className="loader"/>
+                </div>
+                <p className="loader-text">Loading...</p>
+                </div>
             </div>
         )}
 
