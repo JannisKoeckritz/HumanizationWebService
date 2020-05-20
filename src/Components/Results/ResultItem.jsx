@@ -16,26 +16,28 @@ const resultItem = (props) => {
         return valid_amino_acids[aa]
     }
 
-    const mouseEnter = () => {
-        console.log("Mouse entered Item -> key:", props.index)
-        setMouseEntered(true);
-        setVisibility("visible");
-    }
-
-    const mouseLeave = () => {
-        console.log("Mouse leaved Item -> key:", props.index)
-        setMouseEntered(false);
-        setVisibility("hidden");
+    const isCDR = (str) => {
+        if(str ==="true"){
+            return { backgroundColor: "#D9D9D9"}
+        }
+        else{
+            return {}
+        }
     }
 
     return(
+        <div>
         <OverlayTrigger
-            trigger="hover"
+            trigger={["hover","focus"]}
             placement="auto"
             overlay={
                 <Popover id={`popover-${props.index}`}>
                     <div style={{backgroundColor:"white", border:"1px solid black", padding:"10px"}}>
-                    <Popover.Title as="h3">{props.data.pos} - {props.data.amino_acid} <small> ({translateAA(props.data.amino_acid)})</small></Popover.Title>
+                    <Popover.Title as="h3">
+                        {props.meta.chain[0].toUpperCase()+props.data.pos} - {props.data.amino_acid} 
+                        <small style={{marginRight:"10px"}}> ({translateAA(props.data.amino_acid)})</small>
+                        {props.data.frequency < 0.1 ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}    
+                    </Popover.Title>
                     <Popover.Content>
                         <ColumnChart 
                             chain={props.meta.chain} 
@@ -48,18 +50,22 @@ const resultItem = (props) => {
                 </Popover>
             }>
 
-        <div className="result__item" >
+        <div className="result__item" style={isCDR(props.data.cdr)} >
            <div className="result__item__aa" style={{backgroundColor:currentColor}}>
                <b>{props.data.amino_acid}</b>
            </div>
            <div className="result__item__pos">
-                {props.data.pos}
+                {props.meta.chain[0].toUpperCase()+props.data.pos}
            </div>
            <div className="result__item__freq">
                 {props.data.frequency}
            </div>
         </div>
-        </OverlayTrigger>);
+        </OverlayTrigger>
+        <div className="item_rare_indicator">
+                {props.data.frequency < 0.1 ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}
+           </div>
+        </div>);
 
 
 

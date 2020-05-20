@@ -49,10 +49,28 @@
             padding: 2px 2px;
         }
 
+
     }
 
 }
 
-.overlay-box{
-    z-index: 1;
+.item_rare_indicator{
+    width: 2.5rem;
+    text-align: center;
+}
+
+.rare_indicator{
+    width:10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.indicator_empty{
+    width:10px;
+    height: 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
 }

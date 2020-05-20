@@ -13,6 +13,18 @@ import  {freuency_light_data, frequency_heavy_data} from '../../data/frequency';
 
 const columnChart = (props) => {
     //console.log(props)
+    function compare(a, b) {
+      const amino_acid_one = a.x.toUpperCase();
+      const amino_acid_two = b.x.toUpperCase();
+    
+      let comparison = 0;
+      if (amino_acid_one > amino_acid_two) {
+        comparison = 1;
+      } else if (amino_acid_one < amino_acid_two) {
+        comparison = -1;
+      }
+      return comparison;
+    }
 
     const getData = () => {
         if(props.chain==='Heavy'){
@@ -22,11 +34,11 @@ const columnChart = (props) => {
               if(key===props.aa){
                 datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:1})
               }else{
-                datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:4})
+                datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:5})
               }
               
           }
-                return datalist
+                return datalist.sort(compare)
             }
         else{
             const dataset = freuency_light_data['imgt'][props.position]
@@ -45,8 +57,6 @@ const columnChart = (props) => {
 
     
 
-
-    console.log(columnChart.datalist)
 
     return (
       <XYPlot margin={{bottom: 70}} xType="ordinal" width={300} height={300}>

@@ -9,17 +9,19 @@ export default class Results extends Component {
     
 
     state = {
-        colorTheme: "1",
+        colorTheme: "4",
         annotationScheme: "kabat"
     }
 
     colorChangeHandler = (event) => {
+        console.log("change color theme")
         this.setState({
             colorTheme: event.target.value
         })
     }
 
     changeAnnotation = (event) => {
+        console.log("change anno theme")
         this.setState({
             annotationScheme: event.target.value
         })

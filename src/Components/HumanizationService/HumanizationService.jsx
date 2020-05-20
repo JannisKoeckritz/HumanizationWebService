@@ -76,6 +76,7 @@ class HumanizationService extends Component {
             annotation:Object.keys(json_data.data.annotation),
             meta: json_data.data.meta
         })
+        console.log(this.state)
         // console.log("[HS] isfetching, sendRequest:", this.state.isfetching, this.state.sendRequest)
         // console.log(this.state)
         this.handleNext(this.state.activeStep)

@@ -7,6 +7,7 @@ import Spinner from '../Loading/Loading';
 
 const contentManager = (props) => {
 
+    
     let content = null;
     if(props.activeStep ===0){
         content=(
@@ -23,7 +24,6 @@ const contentManager = (props) => {
     }
 
     let loading = null;
-    //console.log("[CM] isfetching, sendRequest:", props.isfetching, props.sendRequest)
     if(props.isfetching && props.sendRequest){
         loading = <Spinner />
     }

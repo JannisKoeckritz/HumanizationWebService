@@ -2,68 +2,86 @@
 .settings {
     background-color:var(--grey-1);
     width: 100%;
-    padding: 10px;
+    padding: 5px;
     margin: 1rem 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    align-content: space-between;
 
-    &__item{
+    &-item{
+        display: inline-block;
+        margin: 0.4rem 1.5rem;
         align-self: center;
+        min-width: 400px;
 
-        &__select{
-            margin: 5px 5px;
-            padding: 5px;
-            appearance: none;
-            border: none;
-            width:8rem;
-            min-width: 30px;
+        &__less-margin{
+            margin-right: 1rem;
+        }
+
+        &-label{
+            font-family: "Monserrat", sans-serif;
+            margin: 0 5px;
             height: 30px;
-            color: #000;
-            font-family: 'Monserrat', sans-serif;
-            font-size: 16px;
-            border-radius: 3px;
-            background-color: #f4f4f4;
+        }
 
-            outline: none;
-            option {
-                color: #666;
+        &-selector{
+            margin: 0 5px;
+            &-select {
+                padding: 5px;
+                appearance: none;
+                border: none;
+                width: 8rem;
+                min-width: 30px;
+                height: 30px;
+                color: #000;
+                font-family: 'Monserrat', sans-serif;
+                font-size: 16px;
+                border-radius: 3px;
+                background-color: #f4f4f4;
+                outline: none;
+                option {
+                    color: #666;
+                }
             }
         }
 
-        &__title{
+        &-slider{
+            align-self: center;
+            min-width: 200px;
+            width: 3rem;
+            //padding: 5px;
+        }
+
+
+        &-input{
             margin: 0 5px;
-            font-family: "Monserrat", sans-serif;
+            input {
+                appearance: none;
+                box-shadow: none;
+                font-family: 'Monserrat', sans-serif;
+                margin: 5px;
+                height: 30px;
+                max-width: 50px;
+                font-size: 16px;
+                background-color: #f4f4f4;
+                outline: none;
+                padding: 5px;
+                text-align: center;
+            }
         }
 
-        
-        &__label{
-            width:100%;
-            justify-content: space-between;
-        }
-
-        &__input{
-            appearance: none;
-            box-shadow: none;
-            font-family: 'Monserrat', sans-serif;
-            margin: 5px;
-            height: 30px;
-            max-width: 50px;
-            font-size: 16px;
-            background-color: #f4f4f4;
-            outline: none;
-            padding: 5px;
-            text-align: center;
-
-        }
     }
-
-
+}
+.MuiSlider-thumbColorPrimary{
+    color: var(--grey-3);
 }
 
-// .slider-item{
-//     align-self: baseline;
-//     flex: 2 0px;
-// }
+.MuiSlider-rail{
+    color: var(--grey-2);
+}
+.MuiSlider-track{
+    color: red;
+}

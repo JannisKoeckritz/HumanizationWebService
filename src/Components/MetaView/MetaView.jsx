@@ -1,5 +1,12 @@
 import React from 'react';
 
+const sliceSequence = (seq) => {
+    let position = seq.length/2
+    let insertion = "\n"
+    let output = [seq.slice(0,position),insertion,seq.slice(position)].join("")
+    return output
+}
+
 const metaView = (props) => {
     return(
         <div className="metaview__container">
@@ -32,7 +39,7 @@ const metaView = (props) => {
                     Sequence:
                 </div>
                 <div className="metaview__description">
-                    {props.meta.sequence}
+                    {sliceSequence(props.meta.sequence)}
                 </div>
             </div>
         </div>

@@ -29,7 +29,8 @@ const sequnceForm = (props) => {
                 className="searchInput"
                 rows={8}
                 variant="outlined"
-        /><br/>
+        />
+               
         <button className="btn" onClick={props.onSubmit}>SUBMIT</button>
         </div>
         )
