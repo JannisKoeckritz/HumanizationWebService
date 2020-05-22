@@ -74,3 +74,10 @@
     border-radius: 50%;
     display: inline-block;
 }
+
+.popover-flexbox{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: nowrap;
+}

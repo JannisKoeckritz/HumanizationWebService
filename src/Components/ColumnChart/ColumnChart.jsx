@@ -3,7 +3,6 @@ import {
     XYPlot,
     XAxis,
     YAxis,
-    VerticalGridLines,
     HorizontalGridLines,
     VerticalBarSeries
   } from 'react-vis';

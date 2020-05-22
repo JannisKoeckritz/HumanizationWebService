@@ -38,7 +38,7 @@ const metaView = (props) => {
                 <div className="metaview__title">
                     Sequence:
                 </div>
-                <div className="metaview__description">
+                <div className="metaview__description" style={{textAlign:"center"}}>
                     {sliceSequence(props.meta.sequence)}
                 </div>
             </div>

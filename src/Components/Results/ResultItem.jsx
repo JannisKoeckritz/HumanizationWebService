@@ -3,6 +3,7 @@ import colormap from '../../assets/colors';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import ColumnChart from '../ColumnChart/ColumnChart'
+import FrequencyTable from '../FrequencyTable/FrequencyTable'
 import valid_amino_acids from '../../data/iupac'
 
 
@@ -39,11 +40,17 @@ const resultItem = (props) => {
                         {props.data.frequency < 0.1 ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}    
                     </Popover.Title>
                     <Popover.Content>
+                        <div className="popover-flexbox">
                         <ColumnChart 
                             chain={props.meta.chain} 
                             aa={props.data.amino_acid} 
                             position={props.data.pos}
                             annotationScheme={props.annotationScheme}/>
+                        <FrequencyTable
+                            chain={props.meta.chain} 
+                            aa={props.data.amino_acid} 
+                            position={props.data.pos} />
+                        </div>
                     </Popover.Content>
                     </div>
 

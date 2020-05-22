@@ -18,3 +18,6 @@ yarn-debug.log*
 yarn-error.log*
 __pycache__
 
+#dev
+how-to-setup.txt
+api/

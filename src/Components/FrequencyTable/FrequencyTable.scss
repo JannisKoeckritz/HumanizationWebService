@@ -1,0 +1,17 @@
+.frequency-container{
+    columns: 2 auto;
+    column-gap: 0.3rem;
+}
+
+.frequency-item{
+    font-size: 1rem;
+    padding: 0.2rem;
+    &-aa{
+        font-weight: 800;
+        margin-right: 1rem;
+    }
+    &-value{
+        font-weight: 300;
+
+    }
+}
