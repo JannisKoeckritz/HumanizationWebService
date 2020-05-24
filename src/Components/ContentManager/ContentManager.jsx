@@ -2,6 +2,7 @@ import React from 'react'
 import SequenceForm from '../Forms/SequenceInput';
 import Results from '../Results/Results';
 import Spinner from '../Loading/Loading';
+import BlastTable from '../BlastTable/BlastTable';
 
 
 
@@ -20,6 +21,15 @@ const contentManager = (props) => {
     if(props.activeStep===1){
         content=(
             <Results items={props.data} annotation={props.annotation} meta={props.meta}/>
+        )
+    }
+    if(props.activeStep===2){
+        content=(
+            <BlastTable 
+                blastResults={props.blastResults}
+                selectedBlastResults={props.selectedBlastResults}
+                addBlastResult={props.addBlastResult}
+            />
         )
     }
 

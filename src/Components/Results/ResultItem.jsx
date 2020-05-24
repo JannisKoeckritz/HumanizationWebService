@@ -27,7 +27,7 @@ const resultItem = (props) => {
     }
 
     return(
-        <div>
+        <div className="overlay-trigger">
         <OverlayTrigger
             trigger={["hover","focus"]}
             placement="auto"
