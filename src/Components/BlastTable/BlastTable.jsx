@@ -1,26 +1,28 @@
 import React from 'react';
+import BlastSelector from '../BlastSelector/BlastSelector'
 
 
 
 const blastTable = (props) => {
     console.log("BLAST TABLE",props)
     return (
-        <table style={{textAlign:"center"}}>
-            <thead>
-            <tr>
+        <div>
+        <h2 className="result result__title">Blast Results</h2>
+        <div className="blast-selector-container">
+            <BlastSelector {...props}/>
+        </div>
+        <table className="blast-table">
+            <thead className="blast-table-heading">
+            <tr className="blast-table-row">
                 <td>index</td>
                 <td>job_id</td>
                 <td>seq_db_id</td>
                 <td>percent</td>
                 <td>length</td>
                 <td>mismatch</td>
-                <td>gapopen</td>
-                <td>qstart</td>
-                <td>qend</td>
-                <td>sstart</td>
-                <td>send</td>
                 <td>evalue</td>
                 <td>bitscore</td>
+                <td>add</td>
             </tr>
             </thead>
             <tbody>
@@ -48,17 +50,18 @@ const blastTable = (props) => {
                         <td>{percent}</td>
                         <td>{length}</td>
                         <td>{mismatch}</td>
-                        <td>{gapopen}</td>
-                        <td>{qstart}</td>
-                        <td>{qend}</td>
-                        <td>{sstart}</td>
-                        <td>{send}</td>
                         <td>{evalue}</td>
                         <td>{bitscore}</td>
+                        <td><button 
+                            className="btn-simple btn-simple-green btn-round"
+                            onClick={() => {
+                                props.addBlastResult({key:index, value:seq_db_id})
+                            }}>+</button></td>
                     </tr>)
                 })}
                 </tbody>
         </table>
+        </div>
     )
 }
 

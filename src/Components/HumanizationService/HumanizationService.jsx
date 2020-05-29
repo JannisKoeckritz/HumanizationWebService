@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ProgressBar from '../Progress/Progress';
 import ContentManager from '../ContentManager/ContentManager';
 import ServiceNavigation from '../ServiceNavigation/ServiceNavigation';
+import AlertBar from '../Alert/Alert';
 
 class HumanizationService extends Component {
 
@@ -15,7 +16,10 @@ class HumanizationService extends Component {
         steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Apply backmutation','Export'],
         finished: false,
         blastResults : null,
-        selectedBlastResults : []
+        selectedBlastResults : [],
+        alertMessage: "",
+        alertType: "success",
+        showAlert: false
     }
 
     handleNext = (oldStepIndex) => {
@@ -55,15 +59,34 @@ class HumanizationService extends Component {
         })
     }
 
-    addBlastResult = (dbentry) => {
-        prevState => ({
-            selectedBlastResults: [...prevState.selectedBlastResults, dbentry]
-    })}
+    addBlastResult = (newItem) => {
+        let resultArray = [...this.state.selectedBlastResults]
+        resultArray.push(newItem)
+        this.setState({
+            selectedBlastResults: resultArray
+        })
+    }
+
+    deleteBlastResult = (chipToDelete) => () => {
+        let chipData = this.state.selectedBlastResults.filter((chip) => chip.key !== chipToDelete.key);
+        this.setState({
+            selectedBlastResults: chipData
+        })
+      };
 
     resetBlastResults = () => {
         this.setState({
             selectedBlastResults: []
         })
+    }
+
+    resetAlert = () => {
+        setTimeout(() => {
+            this.setState({
+                showAlert: false
+            })
+
+        },3000)
     }
 
     fetchData = async (seq, id) => {
@@ -87,11 +110,12 @@ class HumanizationService extends Component {
             data:json_data,
             isfetching: false,
             annotation:Object.keys(json_data.data.annotation),
-            meta: json_data.data.meta
+            meta: json_data.data.meta,
+            alertType: "success",
+            alertMessage: "Annotated successfully!",
+            showAlert: true,
         })
         console.log(this.state)
-        // console.log("[HS] isfetching, sendRequest:", this.state.isfetching, this.state.sendRequest)
-        // console.log(this.state)
         this.handleNext(this.state.activeStep)
         }
 
@@ -115,10 +139,11 @@ class HumanizationService extends Component {
         this.setState({
             blastResults:json_data,
             isfetching: false,
+            alertType: "success",
+            alertMessage: "Execute Blast successfully!",
+            showAlert: true
         })
-        console.log(this.state.blast_results)
-        // console.log("[HS] isfetching, sendRequest:", this.state.isfetching, this.state.sendRequest)
-        // console.log(this.state)
+        console.log(this.state.blastResults)
         this.handleNext(this.state.activeStep)
         }
 
@@ -130,12 +155,20 @@ class HumanizationService extends Component {
         return(
             <div className="contentContainer">
                 <ProgressBar {...this.state}/>
+                {this.state.isfetching?null:<AlertBar  
+                    alertMessage={this.state.alertMessage}
+                    alertType={this.state.alertType}
+                    showAlert={this.state.showAlert}
+                    resetAlert={this.resetAlert}/>}
                 <ContentManager 
                     {...this.state}
                     next={() => {this.handleNext(this.state.activeStep)}}
                     back={() => {this.handleBack(this.state.activeStep)}}
                     fetchData={() => {this.fetchData(this.state.querySequence, this.state.jobID)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
+                    addBlastResult={this.addBlastResult}
+                    deleteBlastResult={this.deleteBlastResult}
+                    resetBlastResults={this.resetBlastResults}
                     />
                 <ServiceNavigation
                     {...this.state}
@@ -143,6 +176,7 @@ class HumanizationService extends Component {
                     back={() => {this.handleBack(this.state.activeStep)}}
                     loadExample={this.loadExample}
                     submitBlast={this.submitBlast}
+                    resetBlastResults={this.resetBlastResults}
                     />
             </div>
         )

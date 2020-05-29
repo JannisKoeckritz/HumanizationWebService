@@ -40,3 +40,13 @@
      background-color: var(--color-1);
     }
 }
+
+.btn-simple-green {
+    border: 1px solid green;
+    color: green;
+    background-color: white;
+    &:hover{
+        background-color: green;
+        color: white
+    }
+ }

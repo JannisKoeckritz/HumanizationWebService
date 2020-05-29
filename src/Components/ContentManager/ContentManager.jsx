@@ -29,6 +29,8 @@ const contentManager = (props) => {
                 blastResults={props.blastResults}
                 selectedBlastResults={props.selectedBlastResults}
                 addBlastResult={props.addBlastResult}
+                deleteBlastResult={props.deleteBlastResult}
+                resetBlastResults={props.resetBlastResults}
             />
         )
     }

@@ -11,7 +11,6 @@ import  {freuency_light_data, frequency_heavy_data} from '../../data/frequency';
 
 
 const columnChart = (props) => {
-    //console.log(props)
     function compare(a, b) {
       const amino_acid_one = a.x.toUpperCase();
       const amino_acid_two = b.x.toUpperCase();
@@ -58,7 +57,7 @@ const columnChart = (props) => {
 
 
     return (
-      <XYPlot margin={{bottom: 70}} xType="ordinal" width={300} height={300}>
+      <XYPlot margin={{bottom: 40}} xType="ordinal" width={300} height={300}>
         <HorizontalGridLines />
         <XAxis tickLabelAngle={0} />
         <YAxis />
