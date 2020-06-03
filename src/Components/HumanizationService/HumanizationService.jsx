@@ -3,6 +3,7 @@ import ProgressBar from '../Progress/Progress';
 import ContentManager from '../ContentManager/ContentManager';
 import ServiceNavigation from '../ServiceNavigation/ServiceNavigation';
 import AlertBar from '../Alert/Alert';
+import continuousColorLegend from 'react-vis/dist/legends/continuous-color-legend';
 
 class HumanizationService extends Component {
 
@@ -19,7 +20,7 @@ class HumanizationService extends Component {
         alertMessage: "",
         alertType: "success",
         showAlert: false,
-        templateIDs: [],
+        templateIDs: ["c952fc01-726e-4710-9d4a-48357872b37a"],
         results: null
     }
 
@@ -60,11 +61,13 @@ class HumanizationService extends Component {
         })
     }
 
-    deleteTemplate = (chipToDelete) => () => {
-        let chipData = this.state.templateIDs.filter((chip) => chip.key !== chipToDelete.key);
+    deleteTemplate = (idToDelete) => () => {
+        let newTemplates = this.state.templateIDs.filter((element) => element !== idToDelete);
+        console.log("IDtoDelet",idToDelete,"newTemplates",newTemplates)
         this.setState({
-            templateIDs: chipData
+            templateIDs: newTemplates
         })
+        console.log("removed: ", this.state.templateIDs)
       };
 
     resetTemplates = () => {
@@ -74,9 +77,14 @@ class HumanizationService extends Component {
     }
 
     addTemplate = (templateId) => {
-        this.setState(prevState => ({
-            templateIDs: [...prevState.templateIDs, templateId]
-            }))
+        if(!this.state.templateIDs.includes(templateId)){
+            this.setState(prevState => ({
+                templateIDs: [...prevState.templateIDs, templateId]
+                }))
+        }
+        else{
+            console.log("Already added")
+        }
     }
 
     resetAlert = () => {
@@ -163,7 +171,7 @@ class HumanizationService extends Component {
         })
         const json_data = await response.json();
         this.setState({
-            dbEntry:json_data.data,
+            results:json_data.data,
             isfetching: false,
 
             alertType: "success",

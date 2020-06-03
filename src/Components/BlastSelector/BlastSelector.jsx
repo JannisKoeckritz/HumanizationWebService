@@ -26,20 +26,16 @@ const chipsArray = (props) => {
 
   return (
     <div className="blast-selector-container">
-      {chipData.map((data) => {
+      {chipData.map((templateId) => {
         let icon;
 
-        if (data.label === 'React') {
-          icon = <TagFacesIcon />;
-        }
-
         return (
-          <li key={data.key}>
+          <li key={templateId}>
             <Chip
                 size="small"
                 icon={icon}
-                label={data.value}
-                onDelete={props.deleteTemplate(data)}
+                label={templateId}
+                onDelete={props.deleteTemplate(templateId)}
                 className={classes.chip}
             />
           </li>

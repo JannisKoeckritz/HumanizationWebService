@@ -9,6 +9,7 @@ import subprocess
 from tempfile import NamedTemporaryFile
 import re
 import shlex
+from humanize_db.core.db import ABDatabase
 
 app = Flask(__name__)
 CORS(app)
@@ -78,8 +79,29 @@ def fetchFromDB():
     data = str(request.data.decode('utf-8'))
     print(data, type(data))
     data_json = ast.literal_eval(data)
-    loadedData = "Test"
-    time.sleep(3)
-    return {"data":loadedData}
+
+    meta_key = str(data_json["templateIDs"][0])
+    print(meta_key)
+    db = ABDatabase(**cred)
+    db.close()
+    db.open(**cred)
+    loadedData = db.selectByMetaKey(meta_key)
+    dataset = {
+        "id": loadedData[0],
+        "meta_key": loadedData[1],
+        "seq": loadedData[2],
+        "chain_type": loadedData[3],
+        "iso_type": loadedData[4],
+        "germline": loadedData[5],
+        "species": loadedData[6],
+        "disease": loadedData[7],
+        "v_gene": loadedData[8],
+        "j_gene": loadedData[9],
+        "origin": loadedData[10]
+    }
+    print(dataset)
+
+    db.close()
+    return {"data":dataset}
     # results = run_blast_search(data_json['sequence'], "23")
     # return {"data": results}

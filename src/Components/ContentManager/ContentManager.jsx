@@ -32,12 +32,14 @@ const contentManager = (props) => {
                 addTemplate={props.addTemplate}
                 deleteTemplate={props.deleteTemplate}
                 resetTemplates={props.resetTemplates}
+                templateIDs={props.templateIDs}
             />
         )
     }
     if(props.activeStep===3){
         content=(
-            <BackmutationTable/>
+            <BackmutationTable
+                results={props.results}/>
         )
     }
 

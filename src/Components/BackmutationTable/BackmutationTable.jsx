@@ -3,9 +3,13 @@ import valid_amino_acids from '../../data/iupac';
 import AminoLine from './AminoLine';
 
 class BackmutationTable extends Component {
+    constructor(props){
+        super(props);
+    }
+
     state = {
         source:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
-        target:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
+        target:this.props.results.seq,
         modified:"",
         metaId:"51b50889-0ca5-4a62-ae44-da47c73ca23f"
     }
@@ -24,14 +28,12 @@ class BackmutationTable extends Component {
 
                             <AminoLine 
                                 title={"Source"}
-                                target={this.state.target}
-                                source={this.state.source} 
+                                seq={this.state.source} 
                                 className="bmt-source"
                             />
                             <AminoLine 
                                 title={"Target"}
-                                target={this.state.target}
-                                source={this.state.source} 
+                                seq={this.state.target}
                                 className="bmt-target"
                             />
                         </thead>
@@ -39,23 +41,25 @@ class BackmutationTable extends Component {
                             {Object.keys(valid_amino_acids).map(aa => {
                                 return(
                                     <AminoLine  title={aa} 
-                                                target={this.state.target}
-                                                source={this.state.source} 
+                                                seq={this.state.target}
                                                 className="bmt-aa"/>
                                 )
                             })}
                         </tbody>
                         <thead>
                             <AminoLine 
+                                title={"Modified"}
+                                seq={this.state.source} 
+                                className="bmt-source"
+                            />
+                            <AminoLine 
                                 title={"Source"}
-                                target={this.state.target}
-                                source={this.state.source} 
+                                seq={this.state.source} 
                                 className="bmt-source"
                             />
                             <AminoLine 
                                 title={"Target"}
-                                target={this.state.target}
-                                source={this.state.source} 
+                                seq={this.state.target}
                                 className="bmt-target"
                             />
                         </thead>

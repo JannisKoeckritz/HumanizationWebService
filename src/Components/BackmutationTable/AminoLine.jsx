@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 
 class AminoLine extends Component{
     constructor(props){
+        console.log("PROPS:",props)
         super(props);
         this.state = {
-            line:this.props.target.split("")
+            line: props.seq.split("")
         }
         
     }
