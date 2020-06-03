@@ -10,17 +10,14 @@ const alertBar = (props) => {
     let alertContent = null;
     if(props.showAlert){
         alertContent = (
-                <Snackbar>
-                <Alert variant="outlined" severity={props.alertType}>
-                    {/* <AlertTitle>{props.alertType.toUpperCase()}</AlertTitle> */}
+                <Alert variant="filled" severity={props.alertType}>
                     {props.alertMessage}
                 </Alert>
-                </Snackbar>
             );
         props.resetAlert()
     }
     return (
-        <div>
+        <div className="alert-container">
             {alertContent}
         </div>
     )

@@ -61,7 +61,7 @@ const frequencyTable = (props) => {
 
                     if(entry.y < 1){
                         const activeStyleDict = {}
-                        if(entry.x == props.aa){
+                        if(entry.x === props.aa){
                             activeStyleDict = activeStyle
                         }
                         return(
@@ -77,7 +77,7 @@ const frequencyTable = (props) => {
                         ) 
                     }else{
                         const activeStyleDict = {}
-                        if(entry.x == props.aa){
+                        if(entry.x === props.aa){
                             activeStyleDict = activeStyle
                         }
                         return (

@@ -24,7 +24,7 @@ const serviceNavigation = (props) => {
                 props.activeStep >=1 && props.data && <button className="btn btn__service btn__service__back" onClick={props.back}>Back</button>
             }
             {
-                props.activeStep >=2 && props.activeStep <=4 && props.data && <button className="btn btn__service btn__service__next" onClick={props.next}>{nextLabel} </button>
+                props.activeStep >=3 && props.activeStep <=4 && props.data && <button className="btn btn__service btn__service__next" onClick={props.next}>{nextLabel} </button>
             }
             {
                 props.activeStep ===1 && props.data && <button className="btn btn__service btn__service__next" onClick={() => {
@@ -32,8 +32,17 @@ const serviceNavigation = (props) => {
                         props.submitBlast();}
                     else{
                         props.next()
-                    }}}>BLAST</button>
+                    }}}>Blast</button>
             }
+            {
+                props.activeStep===2 && <button className="btn btn__service btn__service__next" onClick={() => {
+                    if(!props.results){
+                        props.fetchDB();
+
+                    }else{
+                        props.next()
+                    }}}>Backmutation</button>
+                }
              {
                 props.activeStep ===0 && !props.isfetching &&<button className="btn-simple btn__service btn__service__example" onClick={props.loadExample}>Load Example sequence</button>
             }

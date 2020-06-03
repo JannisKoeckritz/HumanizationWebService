@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const chipsArray = (props) => {
   const classes = useStyles();
-  const chipData = props.selectedBlastResults
+  const chipData = props.templateIDs
   console.log(chipData)
 
   return (
@@ -39,7 +39,7 @@ const chipsArray = (props) => {
                 size="small"
                 icon={icon}
                 label={data.value}
-                onDelete={props.deleteBlastResult(data)}
+                onDelete={props.deleteTemplate(data)}
                 className={classes.chip}
             />
           </li>

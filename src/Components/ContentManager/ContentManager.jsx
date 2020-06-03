@@ -3,6 +3,7 @@ import SequenceForm from '../Forms/SequenceInput';
 import Results from '../Results/Results';
 import Spinner from '../Loading/Loading';
 import BlastTable from '../BlastTable/BlastTable';
+import BackmutationTable from '../BackmutationTable/BackmutationTable';
 
 
 
@@ -27,11 +28,16 @@ const contentManager = (props) => {
         content=(
             <BlastTable 
                 blastResults={props.blastResults}
-                selectedBlastResults={props.selectedBlastResults}
-                addBlastResult={props.addBlastResult}
-                deleteBlastResult={props.deleteBlastResult}
-                resetBlastResults={props.resetBlastResults}
+                templateIDs={props.templateIDs}
+                addTemplate={props.addTemplate}
+                deleteTemplate={props.deleteTemplate}
+                resetTemplates={props.resetTemplates}
             />
+        )
+    }
+    if(props.activeStep===3){
+        content=(
+            <BackmutationTable/>
         )
     }
 

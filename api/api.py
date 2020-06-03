@@ -69,3 +69,17 @@ def run_blast_search(seq, job_id):
         json_result.append(elem)
     print(json_result)
     return json_result
+
+    #igblastp -germline_db_V database/human_V -query ../query.faa -db ../../../blast/db_blast_in.faa -outfmt 7 -organism human 
+    #IN /home/jannis/Dokumente/Uni/Bachelor/database/igblast/ncbi-igblast-1.16.0
+
+@app.route("/search", methods=["POST"])
+def fetchFromDB():
+    data = str(request.data.decode('utf-8'))
+    print(data, type(data))
+    data_json = ast.literal_eval(data)
+    loadedData = "Test"
+    time.sleep(3)
+    return {"data":loadedData}
+    # results = run_blast_search(data_json['sequence'], "23")
+    # return {"data": results}

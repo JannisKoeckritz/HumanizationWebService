@@ -1,7 +1,20 @@
 import React from 'react';
 import BlastSelector from '../BlastSelector/BlastSelector'
+import Button from '@material-ui/core/Button';
+import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
 
 
+
+const selectButton = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText(purple[500]),
+      backgroundColor: purple[500],
+      '&:hover': {
+        backgroundColor: purple[700],
+      },
+    },
+  }))(Button);
 
 const blastTable = (props) => {
     console.log("BLAST TABLE",props)
@@ -11,21 +24,20 @@ const blastTable = (props) => {
         <div className="blast-selector-container">
             <BlastSelector {...props}/>
         </div>
-        <table className="blast-table">
-            <thead className="blast-table-heading">
-            <tr className="blast-table-row">
-                <td>index</td>
-                <td>job_id</td>
-                <td>seq_db_id</td>
-                <td>percent</td>
-                <td>length</td>
-                <td>mismatch</td>
-                <td>evalue</td>
-                <td>bitscore</td>
-                <td>add</td>
-            </tr>
-            </thead>
-            <tbody>
+        <div className="blast-table-container">
+
+
+        <ul className="blast-table">
+            <li className="blast-heading">
+                <div className="blast-table-heading blast-table-index">Index</div>
+                <div className="blast-table-heading blast-table-seq">Sequence ID</div>
+                <div className="blast-table-heading blast-table-percent">percent</div>
+                <div className="blast-table-heading blast-table-evalue">e-value</div>
+                <div className="blast-table-heading blast-table-bitscore">bitscore</div>
+                <div className="blast-table-heading blast-table-add"></div>
+
+            </li>
+
             {props.blastResults &&
                 props.blastResults.data.map((entry, index) => {
                     const splitted = entry.split("\t")
@@ -34,35 +46,27 @@ const blastTable = (props) => {
                     const percent = splitted[2]
                     const length = splitted[3]
                     const mismatch = splitted[4]
-                    const gapopen = splitted[5]
-                    const qstart = splitted[6]
-                    const qend = splitted[7]
-                    const sstart = splitted[8]
-                    const send = splitted[9]
                     const evalue = splitted[10]
                     const bitscore = splitted[11]
 
                     return (
-                    <tr key={index}>
-                        <td>{index}</td>
-                        <td>{job_id}</td>
-                        <td>{seq_db_id}</td>
-                        <td>{percent}</td>
-                        <td>{length}</td>
-                        <td>{mismatch}</td>
-                        <td>{evalue}</td>
-                        <td>{bitscore}</td>
-                        <td><button 
-                            className="btn-simple btn-simple-green btn-round"
+                    <li className="blast-table-item">
+                        <div className="blast-table-row blast-table-index">{index}</div>
+                        <div className="blast-table-row blast-table-seq">{seq_db_id}</div>
+                        <div className="blast-table-row blast-table-percent">{percent}</div>
+                        <div className="blast-table-row blast-table-evalue">{evalue}</div>
+                        <div className="blast-table-row blast-table-bitscore">{bitscore}</div>
+                        <div className="blast-table-row blast-table-add">
+                            <button
                             onClick={() => {
-                                props.addBlastResult({key:index, value:seq_db_id})
-                            }}>+</button></td>
-                    </tr>)
+                                props.addTemplate({key:index, value:seq_db_id});
+                            }}>Select</button>
+                        </div>
+                    </li>
+                    )
                 })}
-                </tbody>
-        </table>
-        </div>
-    )
-}
 
+        </ul>
+        </div>
+        </div>)}
 export default blastTable;
