@@ -14,7 +14,7 @@ class HumanizationService extends Component {
         querySequence: " ",
         data:null,
         activeStep: 0,
-        steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Apply backmutation','Export'],
+        steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Backmutation','Export'],
         finished: false,
         blastResults : null,
         alertMessage: "",
@@ -195,6 +195,7 @@ class HumanizationService extends Component {
                     back={() => {this.handleBack(this.state.activeStep)}}
                     fetchData={() => {this.fetchData(this.state.querySequence, this.state.jobID)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
+                    loadExample={this.loadExample}
                     addTemplate={this.addTemplate}
                     deleteTemplate={this.deleteTemplate}
                     resetTemplates={this.resetTemplates}

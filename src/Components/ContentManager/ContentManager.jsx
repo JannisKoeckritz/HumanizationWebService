@@ -14,9 +14,11 @@ const contentManager = (props) => {
     if(props.activeStep ===0){
         content=(
             <SequenceForm 
-            onSubmit={props.fetchData} 
-            seqChangeHandler={(seq) => props.seqChangeHandler(seq)}
-            querySequence={props.querySequence}/>
+                onSubmit={props.fetchData} 
+                seqChangeHandler={(seq) => props.seqChangeHandler(seq)}
+                querySequence={props.querySequence}
+                loadExample={props.loadExample}
+            />
         )
     }
     if(props.activeStep===1){

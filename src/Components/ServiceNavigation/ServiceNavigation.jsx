@@ -1,4 +1,5 @@
 import React from 'react'
+import Icon from '@material-ui/core/Icon';
 
 const serviceNavigation = (props) => {
 
@@ -21,10 +22,17 @@ const serviceNavigation = (props) => {
         return (
             <div className="serviceNav__container">
             {
-                props.activeStep >=1 && props.data && <button className="btn btn__service btn__service__back" onClick={props.back}>Back</button>
+                props.activeStep >=1 && props.data && <button className="btn btn__service btn__service__back" onClick={props.back}>
+                    <Icon >chevron_left</Icon>
+                    Back
+                    </button>
             }
             {
-                props.activeStep >=3 && props.activeStep <=4 && props.data && <button className="btn btn__service btn__service__next" onClick={props.next}>{nextLabel} </button>
+                props.activeStep >=3 && props.activeStep <=4 && props.data && <button className="btn btn__service btn__service__next" onClick={props.next}>
+                    {nextLabel}
+                    <Icon >chevron_right</Icon>
+                    
+                    </button>
             }
             {
                 props.activeStep ===1 && props.data && <button className="btn btn__service btn__service__next" onClick={() => {
@@ -43,9 +51,6 @@ const serviceNavigation = (props) => {
                         props.next()
                     }}}>Backmutation</button>
                 }
-             {
-                props.activeStep ===0 && !props.isfetching &&<button className="btn-simple btn__service btn__service__example" onClick={props.loadExample}>Load Example sequence</button>
-            }
             </div>
         )
     }

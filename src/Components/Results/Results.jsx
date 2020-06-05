@@ -31,7 +31,7 @@ export default class Results extends Component {
         console.log(this.props)
     return (
         <div className="result result__box">
-            <h2 className="result result__title">Results</h2>
+            <h2 className="page-title">Results</h2>
             <Settings 
                 colorTheme={this.state.colorTheme} 
                 changeColor={this.colorChangeHandler}

@@ -8,9 +8,6 @@ import valid_amino_acids from '../../data/iupac'
 
 
 const resultItem = (props) => {
-    const [mouseIsEntered, setMouseEntered] = useState(false);
-    const [visibility, setVisibility] = useState("hidden");
-    //console.log(colormap[2][props.data.amino_acid])
     const currentColor = colormap[props.colorTheme][props.data.amino_acid]
 
     const translateAA = (aa) => {

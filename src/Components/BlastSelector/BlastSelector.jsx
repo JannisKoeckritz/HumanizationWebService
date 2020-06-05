@@ -34,6 +34,8 @@ const chipsArray = (props) => {
             <Chip
                 size="small"
                 icon={icon}
+                color={"primary"}
+                style={{backgroundColor:"#004777"}}
                 label={templateId}
                 onDelete={props.deleteTemplate(templateId)}
                 className={classes.chip}

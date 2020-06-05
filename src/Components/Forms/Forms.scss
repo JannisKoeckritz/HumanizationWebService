@@ -9,25 +9,112 @@
 .searchInput {
     width: 100%;
     min-width: 250px;
+    border-radius: 0px !important;
+    &:focus{
+        border-color: var(--color-1);
+    }
+    &:active{
+        border-color: var(--color-1);
+    }
+}
+
+.page-title{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2rem;
+    color: var(--color-1);
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-1);
+}
+
+.page-information{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1rem;
+    color: var(--color-1);
+    box-sizing: border-box;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.page-box{
+    width: 100%;
+    background-color: #f4f4f4;
+    min-height: 100px;
+    padding: 1.5rem;
+}
+
+.link-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    &-between{
+        justify-content: space-between;
+    }
+}
+
+
+.link{
+    color: var(--color-1);
+    font-size: 1rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    float:right;
+    padding: 0.5rem 0;
+    font-style: italic;
+    cursor: pointer;
+    margin-right:1rem;
+    &:hover{
+        text-decoration: underline;
+        font-size: 1.1rem;
+        transition: all .5s;
+    }
+}
+
+.link-icon{
+    font-size: 0.2rem;
+}
+
+.MuiFormControlLabel-label{
+ color: var(--color-1);
+}
+.MuiOutlinedInput-notchedOutline{
+    border: 2px solid var(--color-1) !important;
+
+}
+
+
+
+
+.MuiTextField-root{
+    fieldset {
+        border-radius: 0px;
+        border-color: var(--color-1);
+      }
+}
+#outlined-multiline-static{
+    &:active{
+        border-color: var(--color-1);
+    }
+    &:focus{
+        border-color: var(--color-1);
+    }
 }
 
 .btn {
     border: 1px solid var(--color-1);
-    border-radius: 5px;
-	font-family: 'Lato';
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	font-size: inherit;
 	color: var(--color-1);
-	background-color: white;
+	background-color: transparent;
 	cursor: pointer;
 	padding: 15px;
-	display: inline-block;
 	margin: 10px 0px;;
 	text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
 	font-weight: 700;
     outline: none;
-    float: right;
     transition: all .2s;
     &:hover{
      color:white;

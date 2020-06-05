@@ -86,6 +86,7 @@ def fetchFromDB():
     db.close()
     db.open(**cred)
     loadedData = db.selectByMetaKey(meta_key)
+    print("LOADEDDATA", loadedData)
     dataset = {
         "id": loadedData[0],
         "meta_key": loadedData[1],

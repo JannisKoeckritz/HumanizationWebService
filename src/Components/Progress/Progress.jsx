@@ -13,7 +13,7 @@ const progressBar = (props) => {
 
   return (
     <div>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};

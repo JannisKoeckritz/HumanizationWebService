@@ -29,8 +29,9 @@
 }
 
 .blast-heading{
-    background-color: #979c9c;
+    background-color: var(--color-1);
     &-top{
+        padding: 2rem 2rem;
         position: sticky;
         position: -webkit-sticky;
         top:0px;
@@ -50,7 +51,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
         max-height: 2.2rem;
     }
 

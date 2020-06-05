@@ -13,7 +13,7 @@
     }
     &__title{
         font-size: 1.7rem;
-        font-family: "Monserrat", sans-serif;
+        font-family: inherit;
         font-weight: 500;
         padding-bottom: 5px;
         border-bottom: 2px solid black;
@@ -32,9 +32,8 @@
         text-align: center;
         margin-top: 50px;
         background-color: white;
-        font-family: "Monserrat", sans-serif;
-        font-weight: 300;
-        color: var(--grey-2);
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: var(--color-1);
         transition: all 0;
         &__aa{
             font-style:500;

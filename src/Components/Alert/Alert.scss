@@ -2,7 +2,8 @@
     position: fixed;
     left: 0;
     bottom: 3rem;
-    width:100%
+    width:100%;
+    z-index: 2;
 }
 .MuiAlert-root {
     border-radius: 0px !important;

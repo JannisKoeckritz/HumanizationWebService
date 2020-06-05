@@ -7,16 +7,18 @@
 
 .loader-box{
   display: flex;
+  margin:3rem auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width:300px;
-  height:300px;
+  width:6.5rem;
+  height:6.5rem;
+  padding: 1rem;
   background-color: transparent;
 }
 
 .loader-cropper {
-    margin: 0 auto;
+    
     width: 150px;
     height: 150px;
     position: relative;
@@ -25,16 +27,18 @@
   
   .loader {
     display: inline;
-    height: 40%;
+    height: 100%;
     background-color: transparent;
-    border-radius: 50%;
     animation: spin 1.5s ease-in-out infinite; }
 
   .loader-text {
-    font-family: 'Monserrat', sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.2rem;
+    color: var(--color-1);
     text-align: center;
-    margin-top: -20px;
-    padding: 5px
+    padding: 0.2rem;
+    margin-top: 1rem;
+
   }
   @keyframes spin {
     from {

@@ -20,7 +20,8 @@ const selectButton = withStyles((theme) => ({
 const blastTable = (props) => {
     return (
         <div>
-        <h2 className="result result__title">Blast Results</h2>
+        <h2 className="page-title">Select template</h2>
+        <div className="page-information">This list shows the best blast hits in our database. Please select at least one template to continue (max. 5).</div>
         <div className="blast-selector-container">
             <BlastSelector {...props}/>
         </div>
@@ -28,10 +29,10 @@ const blastTable = (props) => {
             <ul className="blast-table">
                 <li className="blast-heading blast-heading-top">
                     <div className="blast-table-heading blast-table-index">Index</div>
-                    <div className="blast-table-heading blast-table-seq">Sequence ID</div>
-                    <div className="blast-table-heading blast-table-percent">percent</div>
-                    <div className="blast-table-heading blast-table-evalue">e-value</div>
-                    <div className="blast-table-heading blast-table-bitscore">bitscore</div>
+                    <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
+                    <div className="blast-table-heading blast-table-percent">Identity [%]</div>
+                    <div className="blast-table-heading blast-table-evalue">E-value</div>
+                    <div className="blast-table-heading blast-table-bitscore">Bitscore</div>
                     <div className="blast-table-heading blast-table-add"></div>
 
                 </li>
@@ -39,11 +40,11 @@ const blastTable = (props) => {
                 {props.blastResults &&
                     props.blastResults.data.map((entry, index) => {
                         const splitted = entry.split("\t")
-                        const job_id = splitted[0]
+                        //const job_id = splitted[0]
                         const seq_id = splitted[1]
                         const percent = splitted[2]
-                        const length = splitted[3]
-                        const mismatch = splitted[4]
+                        // const length = splitted[3]
+                        // const mismatch = splitted[4]
                         const evalue = splitted[10]
                         const bitscore = splitted[11]
 
@@ -63,10 +64,10 @@ const blastTable = (props) => {
                     })}
                 <li className="blast-heading">
                     <div className="blast-table-heading blast-table-index">Index</div>
-                    <div className="blast-table-heading blast-table-seq">Sequence ID</div>
-                    <div className="blast-table-heading blast-table-percent">percent</div>
-                    <div className="blast-table-heading blast-table-evalue">e-value</div>
-                    <div className="blast-table-heading blast-table-bitscore">bitscore</div>
+                    <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
+                    <div className="blast-table-heading blast-table-percent">Identity [%]</div>
+                    <div className="blast-table-heading blast-table-evalue">E-value</div>
+                    <div className="blast-table-heading blast-table-bitscore">Bitscore</div>
                     <div className="blast-table-heading blast-table-add"></div>
 
                 </li>

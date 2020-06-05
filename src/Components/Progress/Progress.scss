@@ -1,22 +1,27 @@
 .MuiStepIcon-active {
     circle {
-        fill: var(--color-1);   
+        fill: var(--color-1);
+        width: 8px !important;
+        height: 8px !important;
     }
     
 }
 
-.MuiStepIcon-root.MuiStepIcon-completed {
-    color: var(--color-1) !important; 
+.MuiStepIcon-root{
+    width: 2rem !important;
+    height: 2rem !important;
 }
 
-// .navigationButtonContainer {
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     align-items: center;
-//     margin-top: 30px;
-    
-//     button {
-//         min-width: 200px;;
-//     }
-// }
+
+.MuiStepIcon-root.MuiStepIcon-completed {
+    color: var(--color-1) !important;
+
+}
+
+.MuiStepLabel-active{
+    color: var(--color-1) !important;
+}
+
+.MuiStepLabel-completed{
+    color: var(--color-1) !important;
+}

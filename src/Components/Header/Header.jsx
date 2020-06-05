@@ -1,5 +1,5 @@
 import React from 'react';
-import abIcon from '../../img/medical.svg'
+import abIcon from '../../img/ab_white.svg'
 import dbIcon from '../../img/SVG/database.svg';
 import codeIcon from '../../img/SVG/code.svg';
 
