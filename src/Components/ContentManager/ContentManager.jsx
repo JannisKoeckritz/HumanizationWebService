@@ -41,12 +41,13 @@ const contentManager = (props) => {
     if(props.activeStep===3){
         content=(
             <BackmutationTable
-                results={props.results}/>
+                results={props.results}
+                replaceCDR={props.replaceCDR}/>
         )
     }
 
     let loading = null;
-    if(props.isfetching && props.sendRequest){
+    if(props.isfetching){
         loading = <Spinner />
     }
 

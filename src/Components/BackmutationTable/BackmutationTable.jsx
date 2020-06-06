@@ -9,14 +9,21 @@ class BackmutationTable extends Component {
 
     state = {
         source:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
-        target:this.props.results.seq,
+        target:this.props.dbentries.seq,
         modified:"",
         metaId:"51b50889-0ca5-4a62-ae44-da47c73ca23f"
     }
 
+    fetchResults = () => {
+        return this.props.replaceCDR();
+    }
+    
+
 
 
     render(){
+        const data = this.fetchResults()
+        console.log("RESULTS:",data)
         return(
             <div className="backmutation-container">
                 <h2>

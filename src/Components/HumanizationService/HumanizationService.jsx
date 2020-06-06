@@ -3,25 +3,23 @@ import ProgressBar from '../Progress/Progress';
 import ContentManager from '../ContentManager/ContentManager';
 import ServiceNavigation from '../ServiceNavigation/ServiceNavigation';
 import AlertBar from '../Alert/Alert';
-import continuousColorLegend from 'react-vis/dist/legends/continuous-color-legend';
 
 class HumanizationService extends Component {
 
     state = {
         isfetching:false,
-        sendRequest:false,
-        jobID:"34",
+        jobID:"454",
         querySequence: " ",
         data:null,
         activeStep: 0,
         steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Backmutation','Export'],
-        finished: false,
         blastResults : null,
         alertMessage: "",
         alertType: "success",
         showAlert: false,
         templateIDs: ["c952fc01-726e-4710-9d4a-48357872b37a"],
-        results: null
+        dbentries: null,
+        modified: null
     }
 
     handleNext = (oldStepIndex) => {
@@ -41,12 +39,6 @@ class HumanizationService extends Component {
 
     handleReset = () => {
         this.setState({activeStep:0})
-    }
-
-    recieveFinished = () =>{
-        this.setState({
-            finished: true
-        })
     }
 
     setSequence = (seqString) => {
@@ -99,7 +91,6 @@ class HumanizationService extends Component {
     fetchData = async (seq, id) => {
         this.setState({
             isfetching:true,
-            sendRequest: true
         })
         const response = await fetch("http://localhost:3000/annotate",
         {
@@ -171,7 +162,7 @@ class HumanizationService extends Component {
         })
         const json_data = await response.json();
         this.setState({
-            results:json_data.data,
+            dbentries:json_data.data,
             isfetching: false,
 
             alertType: "success",
@@ -181,6 +172,32 @@ class HumanizationService extends Component {
         console.log("SEARCHRESULTS:",this.state.dbEntry)
         this.handleNext(this.state.activeStep)
         }
+    
+    replaceCDR = async() => {
+        this.setState({isfetching:true})
+        const response = await fetch("http://localhost:3000/cdr",
+        {
+            method:"POST",
+            headers:{
+            "Accept":"application/json, text/plain",
+            "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                "templateIDs":this.state.templateIDs,
+                "query": this.state.querySequence})
+        })
+        const json_data = await response.json();
+        this.setState({
+            modified:json_data.data,
+            isfetching: false,
+
+            alertType: "success",
+            alertMessage: "Replaced CDR successfully!",
+            showAlert: true
+        })
+        console.log("modified:",this.state.modified)
+    }
+    
 
     render(){
 
@@ -199,6 +216,7 @@ class HumanizationService extends Component {
                     addTemplate={this.addTemplate}
                     deleteTemplate={this.deleteTemplate}
                     resetTemplates={this.resetTemplates}
+                    replaceCDR={this.replaceCDR}
                     />
                 <ServiceNavigation
                     {...this.state}
