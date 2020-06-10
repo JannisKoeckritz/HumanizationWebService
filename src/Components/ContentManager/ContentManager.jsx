@@ -3,8 +3,8 @@ import SequenceForm from '../Forms/SequenceInput';
 import Results from '../Results/Results';
 import Spinner from '../Loading/Loading';
 import BlastTable from '../BlastTable/BlastTable';
-import BackmutationTable from '../BackmutationTable/BackmutationTable';
-
+import BackmutationContainer from '../BackmutationTable/BackmutationContainer';
+import Export from '../Export/Export';
 
 
 const contentManager = (props) => {
@@ -14,7 +14,7 @@ const contentManager = (props) => {
     if(props.activeStep ===0){
         content=(
             <SequenceForm 
-                onSubmit={props.fetchData} 
+                onSubmit={props.createAnnotation} 
                 seqChangeHandler={(seq) => props.seqChangeHandler(seq)}
                 querySequence={props.querySequence}
                 loadExample={props.loadExample}
@@ -23,7 +23,7 @@ const contentManager = (props) => {
     }
     if(props.activeStep===1){
         content=(
-            <Results items={props.data} annotation={props.annotation} meta={props.meta}/>
+            <Results items={props.querySequenceData} annotation={props.annotation} meta={props.meta}/>
         )
     }
     if(props.activeStep===2){
@@ -35,19 +35,28 @@ const contentManager = (props) => {
                 deleteTemplate={props.deleteTemplate}
                 resetTemplates={props.resetTemplates}
                 templateIDs={props.templateIDs}
+                replaceCDR={props.replaceCDR}
             />
         )
     }
-    if(props.activeStep===3){
+    if(props.activeStep===3){        
         content=(
-            <BackmutationTable
-                results={props.results}
-                replaceCDR={props.replaceCDR}/>
+            <BackmutationContainer
+                results={props.templateData}
+                hybridData={props.hybridData}
+                meta={props.meta}
+            />
+        )
+    }
+
+    if(props.activeStep===4){        
+        content=(
+            <Export />
         )
     }
 
     let loading = null;
-    if(props.isfetching){
+    if(props.isFetching){
         loading = <Spinner />
     }
 

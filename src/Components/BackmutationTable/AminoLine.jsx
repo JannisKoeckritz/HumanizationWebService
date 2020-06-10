@@ -1,27 +1,39 @@
 import React, { Component } from 'react';
+import Cell from './Cell';
 
 
 class AminoLine extends Component{
     constructor(props){
-        console.log("PROPS:",props)
         super(props);
-        this.state = {
-            line: props.seq.split("")
-        }
         
+    }
+
+    state = {
+        line: this.props.frequency
     }
 
     render () {
         const items = []
-        for(const[index, value] of this.state.line.entries()){
-            items.push(
-                <td>{value}</td>
-            )
-        }
+        // console.log("AminoLine: state", this.state)
+        // console.log("AminoLine: props", this.props)
+        if(this.state.line){
+            this.state.line.map(pair => {
+                items.push(
+                    <Cell
+                        key={pair[0]}
+                        aa={this.props.title}
+                        pos={pair[0]}
+                        seqpos={pair[1]}
+                        />
+                )
+            })
+    }
         
         return(
             <tr>
-                <td style={{minWidth:"45px",textAlign:"right",fontWeight:"bold",paddingRight:"15px" }}>{this.props.title}</td>
+                <td className="bmt-line" style={{minWidth:"55px",textAlign:"left",fontWeight:"bold",padding:"1px 15px" }}>
+                    {this.props.title}
+                </td>
                 {items}
             </tr>
         

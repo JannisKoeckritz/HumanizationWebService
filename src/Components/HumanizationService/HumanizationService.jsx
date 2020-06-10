@@ -7,19 +7,29 @@ import AlertBar from '../Alert/Alert';
 class HumanizationService extends Component {
 
     state = {
-        isfetching:false,
-        jobID:"454",
-        querySequence: " ",
-        data:null,
         activeStep: 0,
         steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Backmutation','Export'],
-        blastResults : null,
+        isFetching:false,
+        querySequence: " ",
+        jobID:"454",
+
+        // Alerts
         alertMessage: "",
         alertType: "success",
         showAlert: false,
+
+        // Analyze
+        querySequenceData:null,
+        annotation:null,
+        meta:null,
+
+        // Blast
+        blastResults : null,
         templateIDs: ["c952fc01-726e-4710-9d4a-48357872b37a"],
-        dbentries: null,
-        modified: null
+
+        //Backmutation
+        templateData: null,
+        hybridData: null
     }
 
     handleNext = (oldStepIndex) => {
@@ -88,9 +98,9 @@ class HumanizationService extends Component {
         },3000)
     }
 
-    fetchData = async (seq, id) => {
+    createAnnotation = async (seq) => {
         this.setState({
-            isfetching:true,
+            isFetching:true,
         })
         const response = await fetch("http://localhost:3000/annotate",
         {
@@ -100,13 +110,13 @@ class HumanizationService extends Component {
             "Content-Type": 'application/json'
             },
             body: JSON.stringify({
-                "sequence":seq,
-                "jobID":id})
+                "sequence":seq
+            })
         })
         const json_data = await response.json();
         this.setState({
-            data:json_data,
-            isfetching: false,
+            querySequenceData:json_data,
+            isFetching: false,
             annotation:Object.keys(json_data.data.annotation),
             meta: json_data.data.meta,
             alertType: "success",
@@ -119,7 +129,7 @@ class HumanizationService extends Component {
 
     submitBlast = async () => {
         this.setState({
-            isfetching:true,
+            isFetching:true,
             sendBlast: true
         })
         const response = await fetch("http://localhost:3000/blast",
@@ -136,7 +146,7 @@ class HumanizationService extends Component {
         const json_data = await response.json();
         this.setState({
             blastResults:json_data,
-            isfetching: false,
+            isFetching: false,
             
             alertType: "success",
             alertMessage: "Execute Blast successfully!",
@@ -148,7 +158,7 @@ class HumanizationService extends Component {
 
     fetchDB = async () => {
         this.setState({
-            isfetching:true
+            isFetching:true
         })
         const response = await fetch("http://localhost:3000/search",
         {
@@ -162,19 +172,20 @@ class HumanizationService extends Component {
         })
         const json_data = await response.json();
         this.setState({
-            dbentries:json_data.data,
-            isfetching: false,
+            templateData:json_data.data,
+            isFetching: false,
 
             alertType: "success",
             alertMessage: "Fetched sequence data from database successfully!",
             showAlert: true
         })
-        console.log("SEARCHRESULTS:",this.state.dbEntry)
+        console.log("SEARCHRESULTS:",this.state.templateData)
+        this.replaceCDR()
         this.handleNext(this.state.activeStep)
         }
     
     replaceCDR = async() => {
-        this.setState({isfetching:true})
+        this.setState({isFetching:true})
         const response = await fetch("http://localhost:3000/cdr",
         {
             method:"POST",
@@ -188,14 +199,14 @@ class HumanizationService extends Component {
         })
         const json_data = await response.json();
         this.setState({
-            modified:json_data.data,
-            isfetching: false,
+            hybridData:json_data.data,
+            isFetching: false,
 
             alertType: "success",
             alertMessage: "Replaced CDR successfully!",
             showAlert: true
         })
-        console.log("modified:",this.state.modified)
+        console.log("modified:",this.state.hybridData)
     }
     
 
@@ -210,7 +221,7 @@ class HumanizationService extends Component {
                     {...this.state}
                     next={() => {this.handleNext(this.state.activeStep)}}
                     back={() => {this.handleBack(this.state.activeStep)}}
-                    fetchData={() => {this.fetchData(this.state.querySequence, this.state.jobID)}}
+                    createAnnotation={() => {this.createAnnotation(this.state.querySequence)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
                     loadExample={this.loadExample}
                     addTemplate={this.addTemplate}
@@ -226,8 +237,9 @@ class HumanizationService extends Component {
                     submitBlast={this.submitBlast}
                     resetTemplates={this.resetTemplates}
                     fetchDB={this.fetchDB}
+                    replaceCDR={this.replaceCDR}
                     />
-                {this.state.isfetching?null:<AlertBar  
+                {this.state.isFetching?null:<AlertBar  
                     alertMessage={this.state.alertMessage}
                     alertType={this.state.alertType}
                     showAlert={this.state.showAlert}

@@ -17,7 +17,7 @@ const ColorCheckBox = withStyles({
 const sequnceForm = (props) => {
 
     let loadingBanner = null;
-    if(props.isfetching){
+    if(props.isFetching){
         loadingBanner = <Spinner />
         return loadingBanner
     }
@@ -34,7 +34,7 @@ const sequnceForm = (props) => {
                     props.seqChangeHandler(value)
                 }}
                 id="outlined-multiline-static"
-                label="Input your protein sequence here ..."
+                label="Enter your protein sequence here ..."
                 multiline
                 className="searchInput"
                 rows={9}

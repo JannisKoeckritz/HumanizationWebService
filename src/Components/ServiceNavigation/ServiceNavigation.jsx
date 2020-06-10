@@ -4,9 +4,7 @@ import Icon from '@material-ui/core/Icon';
 const serviceNavigation = (props) => {
 
     let nextLabel = "Next";
-    // if(props.activeStep===1&&props.blast_results){
-    //     nextLabel="Blast"
-    // }
+
     if(props.activeStep===2){
         nextLabel="Backmutation"
     }
@@ -18,24 +16,24 @@ const serviceNavigation = (props) => {
     }
 
     const navigation = null;
-    if(!props.isfetching){
+    if(!props.isFetching){
         return (
             <div className="serviceNav__container">
             {
-                props.activeStep >=1 && props.data && <button className="btn btn__service btn__service__back" onClick={props.back}>
+                props.activeStep >=1 && props.querySequenceData && <button className="btn btn__service btn__service__back" onClick={props.back}>
                     <Icon >chevron_left</Icon>
                     Back
                     </button>
             }
             {
-                props.activeStep >=3 && props.activeStep <=4 && props.data && <button className="btn btn__service btn__service__next" onClick={props.next}>
+                props.activeStep >=3 && props.activeStep <=4 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={props.next}>
                     {nextLabel}
                     <Icon >chevron_right</Icon>
                     
                     </button>
             }
             {
-                props.activeStep ===1 && props.data && <button className="btn btn__service btn__service__next" onClick={() => {
+                props.activeStep ===1 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={() => {
                     if(!props.blastResults){
                         props.submitBlast();}
                     else{
@@ -44,20 +42,31 @@ const serviceNavigation = (props) => {
             }
             {
                 props.activeStep===2 && <button className="btn btn__service btn__service__next" onClick={() => {
-                    if(!props.results){
+                    if(!props.templateData){
                         props.fetchDB();
 
                     }else{
                         props.next()
                     }}}>Backmutation</button>
                 }
+            {/* {
+                props.activeStep===3 && <button className="btn btn__service btn__service__next" onClick={() => {
+                    if(props.templateData){
+                        props.replaceCDR();
+
+                    }else{
+                        props.next()
+                    }}}>Load</button>
+                } */}
+            
+            
             </div>
         )
     }
 
     return(
         <div>
-        {navigation}
+            {navigation}
         </div>
 
     )

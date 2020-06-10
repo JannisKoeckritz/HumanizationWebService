@@ -1,81 +1,68 @@
-import React, { Component } from 'react';
-import valid_amino_acids from '../../data/iupac';
+import React,  {Component} from 'react'
 import AminoLine from './AminoLine';
-
+import valid_amino_acids from '../../data/iupac';
+import MetaView from './MetaData';
+import frequency_light from '../../data/frequency_light_table.json';
+import frequency_heavy from '../../data/frequency_heavy_table.json';
+import TableHead from './TableHead';
 class BackmutationTable extends Component {
-    constructor(props){
-        super(props);
-    }
 
     state = {
-        source:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
-        target:this.props.dbentries.seq,
-        modified:"",
-        metaId:"51b50889-0ca5-4a62-ae44-da47c73ca23f"
+        activeCoordinate: [],
+        Xcoord: null,
+        Ycoord: null
     }
 
-    fetchResults = () => {
-        return this.props.replaceCDR();
+    setXY = (newCoordinates) => {
+        this.setState({
+            Xcoord: newCoordinates[0],
+            Ycoord: newCoordinates[1]
+        })
     }
-    
+
+    render() {
+        console.log("BMT-TABLE props: ", this.props)
+        return (
+        <div className="bmt-box">
+            {/* <h4 className="bmt-heading">Template-ID: {this.props.name}</h4> */}
+            <MetaView 
+                title={this.props.name}
+                query={this.props.query}
+                target={this.props.target}
+                modified={this.props.modified}/>
+
+                        
+            <div className="bmt-table">
+                <table>
+                        <TableHead
+                            title={"Modified"}
+                            seq={this.props.modified}
+                        />
 
 
+                    <tbody>
+                        {Object.keys(valid_amino_acids).map((aa, index) => {
+                            return(
+                                <AminoLine
+                                    key={index}
+                                    title={aa} 
+                                    seq={this.props.modified}
+                                    frequency={this.props.frequency[this.props.annotationScheme]}
+                                    annotationScheme={this.props.annotationScheme}
+                                />
+                            )
+                        })}
+                    </tbody>
 
-    render(){
-        const data = this.fetchResults()
-        console.log("RESULTS:",data)
-        return(
-            <div className="backmutation-container">
-                <h2>
-                    BackmutationTable
-                </h2>
-                <div className="bmt-table">
-                    <table>
-                        <thead>
-
-                            <AminoLine 
-                                title={"Source"}
-                                seq={this.state.source} 
-                                className="bmt-source"
-                            />
-                            <AminoLine 
-                                title={"Target"}
-                                seq={this.state.target}
-                                className="bmt-target"
-                            />
-                        </thead>
-                        <tbody>
-                            {Object.keys(valid_amino_acids).map(aa => {
-                                return(
-                                    <AminoLine  title={aa} 
-                                                seq={this.state.target}
-                                                className="bmt-aa"/>
-                                )
-                            })}
-                        </tbody>
-                        <thead>
-                            <AminoLine 
-                                title={"Modified"}
-                                seq={this.state.source} 
-                                className="bmt-source"
-                            />
-                            <AminoLine 
-                                title={"Source"}
-                                seq={this.state.source} 
-                                className="bmt-source"
-                            />
-                            <AminoLine 
-                                title={"Target"}
-                                seq={this.state.target}
-                                className="bmt-target"
-                            />
-                        </thead>
-                    </table>
-                </div>
+                    <TableHead
+                            title={"Modified"}
+                            seq={this.props.modified}
+                        />
                     
-            </div>
-        )
-    }
+                </table>
+                </div></div>
+                
+        )}
 }
 
 export default BackmutationTable;
