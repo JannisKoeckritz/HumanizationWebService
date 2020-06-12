@@ -10,22 +10,27 @@ class HumanizationService extends Component {
         activeStep: 0,
         steps: ['Enter sequence', 'Analyze sequence','Choose template', 'Backmutation','Export'],
         isFetching:false,
-        querySequence: " ",
-        jobID:"454",
+        querySequence: "",
+        germline:false,
+        job_id:null,
 
         // Alerts
         alertMessage: "",
         alertType: "success",
         showAlert: false,
 
+        //Loading
+        loadingMessage:"Loading",
+
         // Analyze
         querySequenceData:null,
         annotation:null,
         meta:null,
+        chain_type:null,
 
         // Blast
         blastResults : null,
-        templateIDs: ["c952fc01-726e-4710-9d4a-48357872b37a"],
+        templateIDs: [],
 
         //Backmutation
         templateData: null,
@@ -63,13 +68,18 @@ class HumanizationService extends Component {
         })
     }
 
+    toggleGermline=()=>{
+        this.setState({
+            germline: !this.state.germline,
+        })
+      }
+    
+
     deleteTemplate = (idToDelete) => () => {
         let newTemplates = this.state.templateIDs.filter((element) => element !== idToDelete);
-        console.log("IDtoDelet",idToDelete,"newTemplates",newTemplates)
         this.setState({
             templateIDs: newTemplates
         })
-        console.log("removed: ", this.state.templateIDs)
       };
 
     resetTemplates = () => {
@@ -98,37 +108,58 @@ class HumanizationService extends Component {
         },3000)
     }
 
+    checkInputSequence = (seq) => {
+        seq = seq.replace(/(\r\n|\n|\r|>)/gm,"");
+        return seq
+    }
+
     createAnnotation = async (seq) => {
         this.setState({
+            loadingMessage:"Creating annotation",
             isFetching:true,
         })
-        const response = await fetch("http://localhost:3000/annotate",
-        {
-            method:"POST",
-            headers:{
-            "Accept":"application/json, text/plain",
-            "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                "sequence":seq
+        seq = this.checkInputSequence(seq)
+            const response = await fetch("http://localhost:3000/annotate",
+            {
+                method:"POST",
+                headers:{
+                "Accept":"application/json, text/plain",
+                "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    "sequence":seq
+                })
             })
-        })
-        const json_data = await response.json();
-        this.setState({
-            querySequenceData:json_data,
-            isFetching: false,
-            annotation:Object.keys(json_data.data.annotation),
-            meta: json_data.data.meta,
-            alertType: "success",
-            alertMessage: "Annotated successfully!",
-            showAlert: true,
-        })
-        console.log("FETCHEDDATA: ",this.state)
-        this.handleNext(this.state.activeStep)
-        }
+            if(![201,200].includes(response.status)){
+                this.setState({
+                    isFetching:false,
+                    alertType: "error",
+                    alertMessage: `${response.status} - ${response.statusText}`,
+                    showAlert: true
+                })
+            } else {
+
+                const json_data = await response.json();
+                this.setState({
+                    querySequenceData:json_data,
+                    job_id:json_data.job_id,
+                    isFetching: false,
+                    annotation:Object.keys(json_data.data.annotation),
+                    meta: json_data.data.meta,
+                    chain_type: json_data.data.meta.chain_type,
+                    alertType: "success",
+                    alertMessage: "Annotated successfully!",
+                    showAlert: true,
+                })
+                
+            this.handleNext(this.state.activeStep)
+            }
+       }
+
 
     submitBlast = async () => {
         this.setState({
+            loadingMessage:"Searching in Blast database",
             isFetching:true,
             sendBlast: true
         })
@@ -141,26 +172,38 @@ class HumanizationService extends Component {
             },
             body: JSON.stringify({
                 "sequence":this.state.querySequence,
-                "jobID":this.state.jobID})
+                "chain_type": this.state.chain_type,
+                "job_id":this.state.job_id})
         })
-        const json_data = await response.json();
-        this.setState({
-            blastResults:json_data,
-            isFetching: false,
-            
-            alertType: "success",
-            alertMessage: "Execute Blast successfully!",
-            showAlert: true
-        })
-        this.handleNext(this.state.activeStep)
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "error",
+                alertMessage: `${response.status} - ${response.statusText}`,
+                showAlert: true
+            })
+        } else {
+            const json_data = await response.json();
+            this.setState({
+                blastResults:json_data,
+                isFetching: false,
+                
+                alertType: "success",
+                alertMessage: "Execute Blast successfully!",
+                showAlert: true
+            })
+            console.log("BLAST RESULTS", this.state.blastResults)
+            this.handleNext(this.state.activeStep)
         }
+    }
 
 
-    fetchDB = async () => {
+    loadTemplates = async () => {
         this.setState({
+            loadingMessage:"Loading template data",
             isFetching:true
         })
-        const response = await fetch("http://localhost:3000/search",
+        const response = await fetch("http://localhost:3000/templates",
         {
             method:"POST",
             headers:{
@@ -170,23 +213,32 @@ class HumanizationService extends Component {
             body: JSON.stringify({
                 "templateIDs":this.state.templateIDs})
         })
-        const json_data = await response.json();
-        this.setState({
-            templateData:json_data.data,
-            isFetching: false,
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "error",
+                alertMessage: `${response.status} - ${response.statusText}`,
+                showAlert: true
+            })
+        } else {
+            const json_data = await response.json();
+            this.setState({
+                templateData:json_data.data,
+                isFetching: false,
 
-            alertType: "success",
-            alertMessage: "Fetched sequence data from database successfully!",
-            showAlert: true
-        })
-        console.log("SEARCHRESULTS:",this.state.templateData)
-        this.replaceCDR()
-        this.handleNext(this.state.activeStep)
+                alertType: "success",
+                alertMessage: "Fetched sequence data from database successfully!",
+                showAlert: true
+            })
+            console.log("SEARCHRESULTS:",this.state.templateData)
+            this.replaceCDR()
+            this.handleNext(this.state.activeStep)
         }
+    }
     
     replaceCDR = async() => {
         this.setState({isFetching:true})
-        const response = await fetch("http://localhost:3000/cdr",
+        const response = await fetch("http://localhost:3000/humanize",
         {
             method:"POST",
             headers:{
@@ -194,26 +246,32 @@ class HumanizationService extends Component {
             "Content-Type": 'application/json'
             },
             body: JSON.stringify({
-                "templateIDs":this.state.templateIDs,
-                "query": this.state.querySequence})
+                "templateData":this.state.templateData,
+                "sequence": this.state.querySequence})
         })
-        const json_data = await response.json();
-        this.setState({
-            hybridData:json_data.data,
-            isFetching: false,
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "error",
+                alertMessage: `${response.status} - ${response.statusText}`,
+                showAlert: true
+            })
+        } else {
+            const json_data = await response.json();
+            this.setState({
+                hybridData:json_data.data,
+                isFetching: false,
 
-            alertType: "success",
-            alertMessage: "Replaced CDR successfully!",
-            showAlert: true
-        })
-        console.log("modified:",this.state.hybridData)
+                alertType: "success",
+                alertMessage: "Replaced CDR successfully!",
+                showAlert: true
+            })
+            console.log("modified:",this.state.hybridData)
+        }
     }
     
 
     render(){
-
-
-
         return(
             <div className="contentContainer">
                 <ProgressBar {...this.state}/>
@@ -223,6 +281,7 @@ class HumanizationService extends Component {
                     back={() => {this.handleBack(this.state.activeStep)}}
                     createAnnotation={() => {this.createAnnotation(this.state.querySequence)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
+                    toggleGermline={this.toggleGermline}
                     loadExample={this.loadExample}
                     addTemplate={this.addTemplate}
                     deleteTemplate={this.deleteTemplate}
@@ -236,7 +295,7 @@ class HumanizationService extends Component {
                     loadExample={this.loadExample}
                     submitBlast={this.submitBlast}
                     resetTemplates={this.resetTemplates}
-                    fetchDB={this.fetchDB}
+                    loadTemplates={this.loadTemplates}
                     replaceCDR={this.replaceCDR}
                     />
                 {this.state.isFetching?null:<AlertBar  
