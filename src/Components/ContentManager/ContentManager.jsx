@@ -17,6 +17,7 @@ const contentManager = (props) => {
                 onSubmit={props.createAnnotation} 
                 seqChangeHandler={(seq) => props.seqChangeHandler(seq)}
                 querySequence={props.querySequence}
+                toggleGermline={props.toggleGermline}
                 loadExample={props.loadExample}
             />
         )
@@ -57,7 +58,7 @@ const contentManager = (props) => {
 
     let loading = null;
     if(props.isFetching){
-        loading = <Spinner />
+        loading = <Spinner message={props.loadingMessage}/>
     }
 
     return (

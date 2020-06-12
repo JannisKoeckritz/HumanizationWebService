@@ -11,7 +11,7 @@ class BackmutationContainer extends Component {
         source:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
         targets:this.props.templateData,
         modified:[],
-        chain_type: this.props.meta.chain,
+        chain_type: this.props.meta.chain_type,
         annotation_scheme: "kabat"
     }
 

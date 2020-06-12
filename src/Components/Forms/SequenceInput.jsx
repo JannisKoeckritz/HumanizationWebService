@@ -45,6 +45,7 @@ const sequnceForm = (props) => {
         <FormControlLabel
             control={
             <ColorCheckBox
+                onChange={() => props.toggleGermline()}
                 name="germline-validation"
             />
             }
@@ -58,7 +59,7 @@ const sequnceForm = (props) => {
         </div>
     </div>
     )
-
+    
     return (
     <div>
         {searchInput}

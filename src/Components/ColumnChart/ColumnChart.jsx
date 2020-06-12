@@ -25,7 +25,7 @@ const columnChart = (props) => {
     }
 
     const getData = () => {
-        if(props.chain==='Heavy'){
+        if(props.chain_type==='Heavy'){
             const dataset = frequency_heavy_data['imgt'][props.position]
             const datalist = []
             for (let key in dataset){
