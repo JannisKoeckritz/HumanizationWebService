@@ -1,13 +1,13 @@
 import React from 'react';
 import ab from '../../img/ab_logo.svg'
 
- const loading = () => {
+ const loading = (props) => {
         return(
             <div className="loader-container">
                 <div className="loader-box" >
                     <img alt="Spinning antibody" src={ab} className="loader"/>
-                    <p className="loader-text">Loading...</p>
                 </div>
+                <p className="loader-text">{props.message}...</p>
             </div>
         )}
 
