@@ -28,7 +28,6 @@ export default class Results extends Component {
     }
 
     render(){
-        console.log(this.props)
     return (
         <div className="result result__box">
             <h2 className="page-title">Results</h2>
