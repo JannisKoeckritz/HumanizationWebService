@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response, send_file, after_this_request
 from flask_restful import Resource, Api, abort, reqparse
 import os
 from decouple import config
@@ -10,6 +10,8 @@ from tempfile import NamedTemporaryFile
 import shlex
 import subprocess
 from humanize_db.core.db import ABDatabase
+import ast
+import uuid
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,6 +19,7 @@ api = Api(app)
 DB_USER = config("FLASK_DB_USER")
 DB_PWD = config("FLASK_DB_PWD")
 DB_NAME = config("FLASK_DB_NAME")
+DOWNLOAD_PATH = config("DOWNLOAD_PATH")
 
 credentials = {
     "user": DB_USER,
@@ -47,12 +50,14 @@ class BlastSearch(Resource):
     parser.add_argument('sequence', required=True, type=str, help="This field cannot be blank.")
     parser.add_argument('chain_type', required=True, type=str, help="This field cannot be blank.")
     parser.add_argument('job_id', required=True, type=str, help="This field cannot be blank.")
+    parser.add_argument('germline', required=True, type=str, help="This field cannot be blank.")
 
     def post(self):
         data = BlastSearch.parser.parse_args()
         seq = data['sequence']
         chain_type = data['chain_type']
         job_id = data['job_id']
+        germline = data['germline']
         blast_results = run_blast_search(seq, chain_type, job_id)
         if blast_results:
             return {'data':blast_results}, 201
@@ -67,11 +72,9 @@ class Templates(Resource):
         data = Templates.parser.parse_args()
         templateIDs = data['templateIDs']
         export_object = {}
-        print(data)
 
         for meta_key in templateIDs:
             dbentry = load_entry_by_meta_key(meta_key)
-            print(dbentry)
             if dbentry:
                 export_object[meta_key] = dbentry
         if export_object:
@@ -80,7 +83,6 @@ class Templates(Resource):
     
     def get(self, templateID):
         dbentry = load_entry_by_meta_key(templateID)
-        print(dbentry)
         export_object = {}
         if dbentry:
             export_object[templateID] = dbentry
@@ -106,14 +108,81 @@ class Humanization(Resource):
         else:
             return {'message': "Error while parsing data. Please contact the Developer."}, 500
 
+#/export
+class Export(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('sequences', required=True, help="This field cannot be blank.", action="append")
+    parser.add_argument('job_id', required=True, type=str, help="This field cannot be blank.")
+
+    def post(self):
+        data = Export.parser.parse_args()
+        sequences = data['sequences']
+        job_id = data['job_id']
+        filename = self.createFasta(sequences, job_id)
+        print(filename)
+        if filename:
+            if os.path.exists(filename):
+                return {"message": "Created file successfully!"}, 200
+            else:
+                return {'message': "Error while creating fasta file. Please contact the Developer."}, 500
+        else:
+            return {'message': "Error while parsing data. Please contact the Developer."}, 500
+    
+    def get(self, job_id):
+
+        if os.path.exists(DOWNLOAD_PATH):
+            files = os.listdir(DOWNLOAD_PATH)
+            print(files)
+            found_file = False
+            for file in files:
+                if job_id in file:
+                    file_name = file
+                    file_path = DOWNLOAD_PATH+file
+                    found_file = True
+            if not found_file:
+                return {'message': "File does not exist or was already downloaded."}, 500
+            
+            print(file_name,file_path, found_file)
+            file_handle = open(file_path,'r')
+            def stream_and_remove_file():
+                yield from file_handle
+                file_handle.close()
+                os.remove(file_path)
+                print(f"Removed {file_path} successfully!")
+            
+            r = Response(stream_and_remove_file(),mimetype='text/fasta')
+            r.headers.set('Content-Disposition', 'attachment', filename=file_name)
+            r.status_code = 200
+            return r
+        else:
+            return {'message': "Error while creating fasta file. Please contact the Developer."}, 500
+        
+    
+    def createFasta(self, sequences, job_id):
+        try:
+            tmpfile = NamedTemporaryFile(prefix=f"humanized_sequences_{job_id}_",suffix=".fasta", delete=False, dir=DOWNLOAD_PATH)
+            #random_id = uuid.uuid4()
+            with open(tmpfile.name, "a+") as file:
+                print(sequences)
+                for seqObj in sequences:
+                    seqObj = ast.literal_eval(seqObj)
+                    head = f">{seqObj['id']}\n"
+                    body = f"{seqObj['seq']}\n"
+                    content = "".join([head, body])
+                    file.write(content)
+            return tmpfile.name
+        except Exception as err:
+            print(err)
+            return None
+
 #/entry
 class DatabaseEntry(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('sequence', required=True, type=str, help="This field cannot be blank.")
+    parser.add_argument('sequences', required=True, type=str, help="This field cannot be blank.")
 
     def get(self, sequence):
         dbentry = load_entry_by_seq(sequence)
-        print(dbentry)
+        # print(dbentry)
         export_object = {}
         if dbentry:
             export_object[sequence] = dbentry
@@ -123,13 +192,6 @@ class DatabaseEntry(Resource):
             return {'message': "Could not find sequence in DB."}, 404
         return {'message': "Error while parsing data. Please contact the Developer."}, 500
 
-#/export
-class Export(Resource):
-    def post(self, job_id, sequences):
-        content = createFasta(sequences)
-        if content:
-            return {'data': content}, 201
-        return {'data': None}, 500
 
 
 #Functions to export in other modules / components
@@ -138,14 +200,11 @@ def abort_if_id_not_exists(meta_id):
     if meta_id not in IDs:
         abort(404, message=f"Meta key {meta_id} does not exist.")
 
-#TODO: Add frequency to datasets
 def create_json_annotation_data(seq):
     try:
-        ig_object = create_annotation(seq)
-        #print(ig_object)
+        ig_object = create_annotation(seq,anno_types=['kabat','chothia','imgt'])
         json_ig_object = export_to_json(ig_object, to_file=False)
         loaded = json.loads(json_ig_object)
-        #print(loaded)
         meta = loaded['meta']
         if meta['chain_type'].upper() == "H":
             chain_type = "Heavy"
@@ -158,6 +217,7 @@ def create_json_annotation_data(seq):
             "iso_type":"IgG",
             "species":meta["species"]
         }
+        frequencyDataObj = loadFrequencyJson()
         export_object = {}
         for annotationScheme in loaded['data']['annotation']:
             export_object[annotationScheme] = []
@@ -166,9 +226,18 @@ def create_json_annotation_data(seq):
                 working_directory = aSchemeData
                 amino_acid = working_directory['amino_acid'][key]
                 position = working_directory['position'][key]
-                chain = working_directory['chain'][key]
-                frequency = str(round(random.random(),2))
                 extension = working_directory['extension'][key] if working_directory['extension'][key] else ""
+                chain = working_directory['chain'][key]
+                if chain_type == "Heavy":
+                    try:
+                        frequency = str(round(frequencyDataObj[annotationScheme]["heavy"][position][amino_acid],3))
+                    except Exception as err:
+                        frequency = "0"
+                else:
+                    try:
+                        frequency = str(round(frequencyDataObj[annotationScheme]["light"][key][amino_acid],3))
+                    except Exception:
+                        frequency = "0"
                 cdr = working_directory['cdr'][key]
                 dataset = {'pos': str(position)+str(extension), "amino_acid": amino_acid, "chain_type": chain,"frequency":frequency, "cdr": cdr}
                 export_object[annotationScheme].append(dataset)
@@ -276,7 +345,10 @@ def humanize(sequence, templateData):
         results[tempID] = id_result
     return results
 
-
+def loadFrequencyJson():
+    with open('../src/data/frequency.json') as freqFile:
+        data = json.load(freqFile)
+    return data
 
 def create_job_id():
     return random.randint(0,1000)
@@ -289,6 +361,7 @@ api.add_resource(BlastSearch, '/blast')
 api.add_resource(Templates, '/templates','/templates/<string:templateID>')
 api.add_resource(DatabaseEntry, '/entry/<string:sequence>')
 api.add_resource(Humanization, '/humanize')
+api.add_resource(Export, '/export', '/export/<string:job_id>')
 
 if __name__ == "__main__":
     app.run(port=6000)
