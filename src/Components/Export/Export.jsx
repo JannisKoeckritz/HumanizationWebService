@@ -10,6 +10,7 @@ class Export extends Component{
                 <div className="page-information">
                     Download your hybrid sequnces below.
                 </div>
+                <button className="btn" onClick={() => {this.props.downloadFile()}}>Download</button>
             </div>
         )
     }

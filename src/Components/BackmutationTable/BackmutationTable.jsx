@@ -2,9 +2,9 @@ import React,  {Component} from 'react'
 import AminoLine from './AminoLine';
 import valid_amino_acids from '../../data/iupac';
 import MetaView from './MetaData';
-import frequency_light from '../../data/frequency_light_table.json';
-import frequency_heavy from '../../data/frequency_heavy_table.json';
+import frequency_data from '../../data/frequency';
 import TableHead from './TableHead';
+
 class BackmutationTable extends Component {
 
     state = {
@@ -47,8 +47,9 @@ class BackmutationTable extends Component {
                                     key={index}
                                     title={aa} 
                                     seq={this.props.modified}
-                                    frequency={this.props.frequency[this.props.annotationScheme]}
-                                    annotationScheme={this.props.annotationScheme}
+                                    frequency={this.props.frequency[this.props.activeAnnotationScheme]}
+                                    activeAnnotationScheme={this.props.activeAnnotationScheme}
+                                    chain_type={this.props.chain_type}
                                 />
                             )
                         })}

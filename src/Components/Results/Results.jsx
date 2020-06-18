@@ -6,24 +6,18 @@ import ResultItem from './ResultItem';
 
 export default class Results extends Component {
 
-    
+    constructor(props){
+        super(props);
+    }
 
     state = {
         colorTheme: "4",
-        annotationScheme: "kabat"
     }
 
     colorChangeHandler = (event) => {
         console.log("change color theme")
         this.setState({
             colorTheme: event.target.value
-        })
-    }
-
-    changeAnnotation = (event) => {
-        console.log("change anno theme")
-        this.setState({
-            annotationScheme: event.target.value
         })
     }
 
@@ -34,22 +28,26 @@ export default class Results extends Component {
             <Settings 
                 colorTheme={this.state.colorTheme} 
                 changeColor={this.colorChangeHandler}
-                annotationScheme={this.state.annotationScheme}
-                changeAnnotation={this.changeAnnotation}
+                activeAnnotationScheme={this.props.activeAnnotationScheme}
+                changeAnnotation={this.props.changeAnnotation}
                 annotation={this.props.annotation}
+                threshold={this.props.threshold}
+                setThreshold={this.props.setThreshold}
             />
             <MetaView meta={this.props.meta}/>
 
             <div className="result result__list">
                 {this.props.items&&
-                this.props.items.data.annotation[this.state.annotationScheme].map((entry, index) => {
+                this.props.items.data.annotation[this.props.activeAnnotationScheme].map((entry, index) => {
                     return (<ResultItem 
                             index={index} 
                             colorTheme={this.state.colorTheme} 
                             key={index} 
                             data={entry}
-                            annotationScheme={this.state.annotationScheme}
-                            meta={this.props.meta} />)
+                            activeAnnotationScheme={this.props.activeAnnotationScheme}
+                            meta={this.props.meta}
+                            threshold={this.props.threshold}
+                            />)
                 })}       
             </div>
         </div>

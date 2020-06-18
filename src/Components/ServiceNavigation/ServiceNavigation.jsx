@@ -8,9 +8,6 @@ const serviceNavigation = (props) => {
     if(props.activeStep===2){
         nextLabel="Backmutation"
     }
-    if(props.activeStep===3){
-        nextLabel="Export"
-    }
     if(props.activeStep===4){
         nextLabel="Download"
     }
@@ -43,11 +40,16 @@ const serviceNavigation = (props) => {
             {
                 props.activeStep===2 && <button className="btn btn__service btn__service__next" onClick={() => {
                     if(!props.templateData){
-                        props.fetchDB();
+                        props.loadTemplates();
 
                     }else{
                         props.next()
                     }}}>Backmutation</button>
+                }
+            {
+                props.activeStep===4 && <button className="btn btn__service btn__service__next" onClick={() => {
+                    props.selectSequencesForDownload();
+                    }}>Export</button>
                 }
             {/* {
                 props.activeStep===3 && <button className="btn btn__service btn__service__next" onClick={() => {

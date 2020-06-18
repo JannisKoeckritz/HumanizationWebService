@@ -8,11 +8,11 @@ class BackmutationContainer extends Component {
     }
 
     state = {
-        source:"EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA",
+        source:this.props.querySequence,
         targets:this.props.templateData,
         modified:[],
         chain_type: this.props.meta.chain_type,
-        annotation_scheme: "kabat"
+        activeAnnotationScheme: this.props.activeAnnotationScheme
     }
 
     addModified = (modifiedSequence) => {
@@ -51,7 +51,8 @@ class BackmutationContainer extends Component {
                                 target={this.props.hybridData[hybridSeq]["target_seq"]}
                                 modified={this.props.hybridData[hybridSeq]["mod_seq"]}
                                 frequency={this.props.hybridData[hybridSeq]['frequency']}
-                                annotationScheme={this.state.annotation_scheme}
+                                activeAnnotationScheme={this.state.activeAnnotationScheme}
+                                chain_type={this.state.chain_type}
                                 // addModified={this.addModified}
                             />
                         )

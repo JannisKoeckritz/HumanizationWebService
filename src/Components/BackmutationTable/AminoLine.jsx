@@ -22,8 +22,10 @@ class AminoLine extends Component{
                     <Cell
                         key={pair[0]}
                         aa={this.props.title}
-                        pos={pair[0]}
+                        pos={pair[0]+1}
                         seqpos={pair[1]}
+                        chain_type={this.props.chain_type}
+                        activeAnnotationScheme={this.props.activeAnnotationScheme}
                         />
                 )
             })

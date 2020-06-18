@@ -27,6 +27,8 @@ class HumanizationService extends Component {
         annotation:null,
         meta:null,
         chain_type:null,
+        activeAnnotationScheme:'kabat',
+        threshold: [0,2],
 
         // Blast
         blastResults : null,
@@ -64,7 +66,7 @@ class HumanizationService extends Component {
 
     loadExample = () => {
         this.setState({
-            querySequence: "EVKLVESGAGVVKPGGSLKLSCEASGFSFSRYVMSWVRQTPEKRLEWVASISSGGRTYYPGSEMGRFTISRDSARNILYLQMSSLKSEDTAMFYCAREDYYGGRYWYFDVWGAGTTVTVSSA"
+            querySequence: "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"
         })
     }
 
@@ -73,8 +75,25 @@ class HumanizationService extends Component {
             germline: !this.state.germline,
         })
       }
-    
 
+    changeAnnotation = (event) => {
+        this.setState({
+            activeAnnotationScheme: event.target.value
+        })
+    }
+
+    setThreshold = (event, newList) => {
+        if(newList[0] > newList[1]){
+            const first = newList[1]
+            const second = newList[0]
+            this.setState({threshold: [first, second]})
+        }
+        else{
+            this.setState({threshold: newList})
+        }
+        console.log(this.state.threshold)
+    }
+    
     deleteTemplate = (idToDelete) => () => {
         let newTemplates = this.state.templateIDs.filter((element) => element !== idToDelete);
         this.setState({
@@ -173,6 +192,7 @@ class HumanizationService extends Component {
             body: JSON.stringify({
                 "sequence":this.state.querySequence,
                 "chain_type": this.state.chain_type,
+                "germline": this.state.germline,
                 "job_id":this.state.job_id})
         })
         if(![201,200].includes(response.status)){
@@ -269,6 +289,67 @@ class HumanizationService extends Component {
             console.log("modified:",this.state.hybridData)
         }
     }
+
+    downloadFile = async() => {
+        this.setState({isFetching: true});
+        let fetch_url = `http://localhost:3000/export/${this.state.job_id}`
+        console.log(fetch_url)
+        const response = await fetch(fetch_url)
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "warning",
+                alertMessage: `${response.status} - ${response.statusText} - Please generate FASTA file before.`,
+                showAlert: true
+            })
+        } else {
+            response.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = "humanized_sequences.fasta";
+                    a.click()
+                });
+            this.setState({
+                isFetching:false,
+                alertType: "success",
+                alertMessage: "Downloaded file successfully.",
+                showAlert: true
+            })
+        }
+    }
+
+    selectSequencesForDownload = async() => {
+        this.setState({isFetching:true})
+        const response = await fetch("http://localhost:3000/export",
+        {
+            method:"POST",
+            headers:{
+            "Accept":"application/json, text/plain",
+            "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                "sequences": [{"id": "dfb7d39-389dh389d-dg3-33d", "seq": "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"},{"id": "dfb7d39-389dh389d-dg3-33d", "seq": "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"}],
+                "job_id": this.state.job_id
+            })
+
+        })
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "error",
+                alertMessage: `${response.status} - ${response.statusText}`,
+                showAlert: true
+            })
+        } else {
+            this.setState({
+                isFetching:false,
+                alertType: "success",
+                alertMessage: "Created FASTA successfully!",
+                showAlert: true
+            })
+        }
+    }
     
 
     render(){
@@ -282,11 +363,14 @@ class HumanizationService extends Component {
                     createAnnotation={() => {this.createAnnotation(this.state.querySequence)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
                     toggleGermline={this.toggleGermline}
+                    changeAnnotation={this.changeAnnotation}
+                    setThreshold={this.setThreshold}
                     loadExample={this.loadExample}
                     addTemplate={this.addTemplate}
                     deleteTemplate={this.deleteTemplate}
                     resetTemplates={this.resetTemplates}
                     replaceCDR={this.replaceCDR}
+                    downloadFile={this.downloadFile}
                     />
                 <ServiceNavigation
                     {...this.state}
@@ -297,6 +381,7 @@ class HumanizationService extends Component {
                     resetTemplates={this.resetTemplates}
                     loadTemplates={this.loadTemplates}
                     replaceCDR={this.replaceCDR}
+                    selectSequencesForDownload={this.selectSequencesForDownload}
                     />
                 {this.state.isFetching?null:<AlertBar  
                     alertMessage={this.state.alertMessage}

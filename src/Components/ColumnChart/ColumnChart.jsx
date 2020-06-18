@@ -6,7 +6,7 @@ import {
     HorizontalGridLines,
     VerticalBarSeries
   } from 'react-vis';
-import  {freuency_light_data, frequency_heavy_data} from '../../data/frequency';
+import {frequency_data} from '../../data/frequency';
 
 
 
@@ -26,26 +26,26 @@ const columnChart = (props) => {
 
     const getData = () => {
         if(props.chain_type==='Heavy'){
-            const dataset = frequency_heavy_data['imgt'][props.position]
+            const dataset = frequency_data[props.activeAnnotationScheme]["heavy"][props.position]
             const datalist = []
             for (let key in dataset){
               if(key===props.aa){
                 datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:1})
               }else{
-                datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:5})
+                datalist.push({x:key,y:dataset[key]*100, label:`${dataset[key]*100}%`, fill:2})
               }
               
           }
                 return datalist.sort(compare)
             }
         else{
-            const dataset = freuency_light_data['imgt'][props.position]
+            const dataset = frequency_data[props.activeAnnotationScheme]["light"][props.position]
             const datalist = []
                 for (let key in dataset){
                     if(key===props.aa){
-                      datalist.push({x:key,y:dataset[key]*100, fill:"red"})
+                      datalist.push({x:key,y:dataset[key]*100, fill:1})
                     }else{
-                      datalist.push({x:key,y:dataset[key]*100})
+                      datalist.push({x:key,y:dataset[key]*100, fill:2})
                     }
                     
                 }

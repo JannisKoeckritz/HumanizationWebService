@@ -3,6 +3,10 @@ import Slider from "@material-ui/core/Slider";
 
 export default class Settings extends Component {
 
+    constructor(props){
+        super(props);
+    }
+
     state = {
         options: [  {"name": "Scheme 1", "value":"1"} ,
                     {"name": "Zappo", "value":"2"},
@@ -22,26 +26,28 @@ export default class Settings extends Component {
             return `${value}%`
         }
 
-        const setThreshold = (value, index) => {
-            const newPair = [0,0]
-            console.log(newPair)
+        const updateThreshold = (value, index) => {
+            let updated = []
+            const newPair = [this.props.threshold[0],this.props.threshold[1]]
+            console.log(value, index, newPair)
             if(index===0){
                 newPair[0] = value;
-                newPair[1] = this.state.threshold[1]
+                newPair[1] = this.props.threshold[1]
             }
             if(index===1){
-                newPair[1] = value
-                newPair[0] = this.state.threshold[0];
+                newPair[1] = value;
+                newPair[0] = this.props.threshold[0];
             }
-            if(newPair[0]>newPair[1]){
-                this.setState({
-                    threshold: [newPair[1],newPair[0]]
-                })
-            }else{
-                this.setState({
-                    threshold: newPair
-                })
-            }
+            // if(newPair[0]>this.props.threshold[1]){
+            //     updated = [newPair[1],newPair[0]]
+            //     console.log(value, index, newPair)
+                
+            // }else{
+            //     updated =  newPair
+            //     console.log(value, index, newPair)
+            // }
+            console.log(updated)
+            return updated
         }
 
 
@@ -55,7 +61,7 @@ export default class Settings extends Component {
                             <select 
                                 className="settings-item-selector-select" 
                                 onChange={(event) => {this.props.changeAnnotation(event)}} 
-                                value={this.props.annotationScheme}>
+                                value={this.props.activeAnnotationScheme}>
                                 {
                                     this.props.annotation.map((item,ind) => {
                                     return <option key={ind} value={item.index} >{item}</option>
@@ -89,25 +95,25 @@ export default class Settings extends Component {
                             <input
                             style={{display:"inline"}}
                                 type="text" 
-                                value={this.state.threshold[0]}
+                                value={this.props.threshold[0]}
                                 onChange={event => {
                                     const { value } = event.target;
-                                    setThreshold(value, 0)}}
+                                    this.props.setThreshold(event, updateThreshold((value, 0)))}}
                                 />
                             <input
                             style={{display:"inline"}}
                                 type="text" 
-                                value={this.state.threshold[1]}
+                                value={this.props.threshold[1]}
                                 onChange={event => {
                                     const { value } = event.target;
-                                    setThreshold(value, 1)}}
+                                    this.props.setThreshold(event, updateThreshold((value, 1)))}}
                             />
                             </span>
                     </div>
                     <div className="settings-item settings-item-slider">
                         <Slider
-                            value={this.state.threshold}
-                            onChange={handleChange}
+                            value={this.props.threshold}
+                            onChange={this.props.setThreshold}
                             valueLabelDisplay="off"
                             aria-labelledby="range-slider"
                             getAriaValueText={thresholdText}

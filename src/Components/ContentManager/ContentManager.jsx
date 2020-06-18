@@ -24,7 +24,15 @@ const contentManager = (props) => {
     }
     if(props.activeStep===1){
         content=(
-            <Results items={props.querySequenceData} annotation={props.annotation} meta={props.meta}/>
+            <Results
+                activeAnnotationScheme={props.activeAnnotationScheme}
+                changeAnnotation={props.changeAnnotation} 
+                items={props.querySequenceData} 
+                annotation={props.annotation} 
+                meta={props.meta}
+                threshold={props.threshold}
+                setThreshold={props.setThreshold}
+            />
         )
     }
     if(props.activeStep===2){
@@ -43,16 +51,22 @@ const contentManager = (props) => {
     if(props.activeStep===3){        
         content=(
             <BackmutationContainer
+                querySequence={props.querySequence}
                 results={props.templateData}
                 hybridData={props.hybridData}
                 meta={props.meta}
+                activeAnnotationScheme={props.activeAnnotationScheme}
+                changeAnnotation={props.changeAnnotation}
+                threshold={props.threshold}
+                setThreshold={props.setThreshold} 
             />
         )
     }
 
     if(props.activeStep===4){        
         content=(
-            <Export />
+            <Export
+                downloadFile={props.downloadFile}/>
         )
     }
 

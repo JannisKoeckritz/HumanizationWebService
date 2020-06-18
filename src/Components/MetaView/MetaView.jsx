@@ -23,7 +23,7 @@ const metaView = (props) => {
                     Chain:
                 </div>
                 <div className="metaview__description">
-                    {props.meta.chain}
+                    {props.meta.chain_type}
                 </div>
             </div>
             <div className="metaview__container__sub__element">

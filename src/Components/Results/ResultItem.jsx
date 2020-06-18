@@ -43,11 +43,12 @@ const resultItem = (props) => {
                                     chain_type={props.meta.chain_type} 
                                     aa={props.data.amino_acid} 
                                     position={props.data.pos}
-                                    annotationScheme={props.annotationScheme}/>
+                                    activeAnnotationScheme={props.activeAnnotationScheme}/>
                                 <FrequencyTable
                                     chain_type={props.meta.chain_type} 
                                     aa={props.data.amino_acid} 
-                                    position={props.data.pos} />
+                                    position={props.data.pos}
+                                    activeAnnotationScheme={props.activeAnnotationScheme} />
                                 </div>
                             </Popover.Content>
                             </div>
@@ -68,7 +69,7 @@ const resultItem = (props) => {
                 </div>
                 </OverlayTrigger>
                 <div className="item_rare_indicator">
-                        {props.data.frequency < 0.1 ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}
+                        {(props.data.frequency >= props.threshold[0]/100) && (props.data.frequency <= props.threshold[1]/100) ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}
                 </div>
 
             </div>);

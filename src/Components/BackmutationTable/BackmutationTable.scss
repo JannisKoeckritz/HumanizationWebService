@@ -17,6 +17,7 @@ border: none;    }
 
 .bmt-line {
     position: relative;
+    min-width: 0.5rem;
     &:hover{
         cursor: pointer;
     }
