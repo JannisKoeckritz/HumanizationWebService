@@ -1,27 +1,13 @@
 import React from 'react';
 import BlastSelector from '../BlastSelector/BlastSelector'
 import BlastItem from './BlastItem';
-import Button from '@material-ui/core/Button';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, purple } from '@material-ui/core/colors';
 
-
-
-const selectButton = withStyles((theme) => ({
-    root: {
-      color: theme.palette.getContrastText(purple[500]),
-      backgroundColor: purple[500],
-      '&:hover': {
-        backgroundColor: purple[700],
-      },
-    },
-  }))(Button);
 
 const blastTable = (props) => {
     return (
         <div className="page-box">
             <h2 className="page-title">Select template</h2>
-            <div className="page-information">This list shows the best blast hits in our database. Please select at least one template to continue (max. 5).</div>
+            <div className="page-information">This list shows the best blast hits in our database. Please select one template.</div>
             <div className="blast-selector-container">
                 <BlastSelector {...props}/>
             </div>
@@ -29,7 +15,8 @@ const blastTable = (props) => {
                 <ul className="blast-table">
                     <li className="blast-heading blast-heading-top">
                         <div className="blast-table-heading blast-table-index">Index</div>
-                        <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
+                        <div className="blast-table-heading blast-table-index">Germline</div>
+                        {/* <div className="blast-table-heading blast-table-seq">Sequence-ID</div> */}
                         <div className="blast-table-heading blast-table-percent">Identity [%]</div>
                         <div className="blast-table-heading blast-table-evalue">E-value</div>
                         <div className="blast-table-heading blast-table-bitscore">Bitscore</div>
@@ -64,7 +51,8 @@ const blastTable = (props) => {
                         })}
                     <li className="blast-heading">
                         <div className="blast-table-heading blast-table-index">Index</div>
-                        <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
+                        <div className="blast-table-heading blast-table-index">Germline</div>
+                        {/* <div className="blast-table-heading blast-table-seq">Sequence-ID</div> */}
                         <div className="blast-table-heading blast-table-percent">Identity [%]</div>
                         <div className="blast-table-heading blast-table-evalue">E-value</div>
                         <div className="blast-table-heading blast-table-bitscore">Bitscore</div>

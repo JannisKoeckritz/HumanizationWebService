@@ -1,5 +1,5 @@
 import React from 'react';
-import ab from '../../img/ab_logo.svg'
+import ab from '../../img/ab_logo2.svg'
 
  const loading = (props) => {
         return(

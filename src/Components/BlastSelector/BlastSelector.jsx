@@ -26,6 +26,7 @@ const chipsArray = (props) => {
 
   return (
     <div className="blast-selector-container">
+      <span>Your selected template: </span>
       {chipData.map((templateId) => {
         let icon;
 

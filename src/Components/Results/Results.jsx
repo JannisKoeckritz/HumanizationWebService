@@ -22,6 +22,7 @@ export default class Results extends Component {
     }
 
     render(){
+        console.log("RESULTS",this.props)
     return (
         <div className="result result__box">
             <h2 className="page-title">Results</h2>
@@ -34,7 +35,7 @@ export default class Results extends Component {
                 threshold={this.props.threshold}
                 setThreshold={this.props.setThreshold}
             />
-            <MetaView meta={this.props.meta}/>
+            <MetaView meta={this.props.meta} activeAnnotationScheme={this.props.activeAnnotationScheme}/>
 
             <div className="result result__list">
                 {this.props.items&&

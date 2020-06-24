@@ -4,7 +4,7 @@ import {frequency_data} from '../../data/frequency'
 const frequencyTable = (props) => {
 
     const activeStyle = {
-        backgroundColor: "red",
+        backgroundColor: "#C70039",
         color: "white"
     }
 

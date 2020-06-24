@@ -4,27 +4,74 @@ import valid_amino_acids from '../../data/iupac';
 import MetaView from './MetaData';
 import frequency_data from '../../data/frequency';
 import TableHead from './TableHead';
+import MutationLine from './MutationLine';
 
 class BackmutationTable extends Component {
 
-    state = {
-        activeCoordinate: [],
-        Xcoord: null,
-        Ycoord: null
+    constructor(props){
+        super(props)
+        this.state = {
+            mutations: this.props.frequency,
+            appliedMutations: {},
+            mutatedSeq: ""
+        }
     }
 
-    setXY = (newCoordinates) => {
-        this.setState({
-            Xcoord: newCoordinates[0],
-            Ycoord: newCoordinates[1]
+    handleMutation = (posAApair) => {
+        let elems = []
+        elems.push(posAApair)
+        let obj = {}
+        elems.forEach((data) => {
+            obj[data[0]] = data[1]
         })
+        if(this.state.appliedMutations[posAApair[0]]===obj[posAApair[0]]){
+            let newState = {...this.state.appliedMutations}
+            delete newState[posAApair[0]]
+            this.setState({
+                appliedMutations: {
+                    ...newState
+                }
+            })
+        }else{
+            this.setState({
+                appliedMutations: {
+                    ...this.state.appliedMutations,
+                    ...obj
+                }
+            })
+        }
+        this.createMutatedSequence();
+        
     }
+
+    // TODO: Unite sequence with mutations and create string for fasta file
+
+    createMutatedSequence = () => {
+        let obj = {}
+        this.state.mutations[this.props.activeAnnotationScheme].map(posArray => {
+            obj[posArray[0]] = posArray[1]
+        })
+        let mutatedPositions = this.state.appliedMutations
+        Object.keys(mutatedPositions).sort().map(pos => {
+            obj[pos] = mutatedPositions[pos]
+        })
+
+        var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+        let returnString = ""
+        Object.keys(obj).sort(collator.compare).map(position => {
+            returnString = returnString.concat(obj[position])
+        })
+        const identifier = this.props.name
+        const tableNumber = this.props.index
+        const expObj = [tableNumber, identifier, returnString]
+        this.props.addEditedSequence(expObj);
+    }
+    
 
     render() {
-        console.log("BMT-TABLE props: ", this.props)
+        console.log(this.props)
         return (
         <div className="bmt-box">
-            {/* <h4 className="bmt-heading">Template-ID: {this.props.name}</h4> */}
             <MetaView 
                 title={this.props.name}
                 query={this.props.query}
@@ -50,6 +97,9 @@ class BackmutationTable extends Component {
                                     frequency={this.props.frequency[this.props.activeAnnotationScheme]}
                                     activeAnnotationScheme={this.props.activeAnnotationScheme}
                                     chain_type={this.props.chain_type}
+                                    handleMutation={this.handleMutation}
+                                    appliedMutations={this.state.appliedMutations}
+                                    threshold={this.props.threshold}
                                 />
                             )
                         })}
@@ -60,8 +110,19 @@ class BackmutationTable extends Component {
                             seq={this.props.modified}
                         />
                     
+                    <MutationLine
+                        title={"Mutations"}
+                        mutations={this.state.mutations}
+                        activeAnnotationScheme={this.props.activeAnnotationScheme}
+                        appliedMutations={this.state.appliedMutations}
+                        chain_type={this.props.chain_type}
+                        threshold={this.props.threshold}
+                    />
+                    
                 </table>
-                </div></div>
+                </div>
+                {/* <button className="btn" onClick={() => this.createMutatedSequence()}>CREATE SEQUENCE</button> */}
+                </div>
                 
         )}
 }

@@ -7,7 +7,11 @@ const cellItem = (props) => {
     const [title, setTitle] = useState("")
 
     const toggleTitle = () =>{
-        setTitle(props.aa.toLowerCase())
+        if(title===""){
+            setTitle(props.aa.toLowerCase())
+        }else{
+            setTitle("")
+        }
     }
 
     const getChainType = (ct) => {
@@ -20,29 +24,56 @@ const cellItem = (props) => {
     }
 
 
-    const loadFreqData = (anntotationScheme,pos, aa) => {
+    const loadFreqData = (anntotationScheme, pos, aa) => {
         const frequency = frequency_data[anntotationScheme][getChainType()][pos][aa]
         //console.log(frequency);
-        
-            if(frequency<=0.01){
-                return {
-                    backgroundColor: "red"
+        console.log(frequency, props.threshold)
+            if(frequency<=props.threshold[0]/100){
+                if(props.cdr==="1"){
+                    return {
+                        backgroundColor: "#9b0000"
+                    }
+
+                }
+                else{
+                    return {
+                        backgroundColor: "red"
+                    }
+                }
+
+            }
+            if(frequency>props.threshold[0]/100&&frequency<=props.threshold[1]/100){
+                if(props.cdr==="1"){
+                    return {
+                        backgroundColor: "#9f9f00"
+                    }
+
+                }
+                else{
+                    return {
+                        backgroundColor: "yellow"
+                    }
                 }
             }
-            if(frequency>0.01&&frequency<=0.9){
-                return {
-                    backgroundColor: "yellow"
+            if(frequency>props.threshold[1]/100){
+                if(props.cdr==="1"){
+                    return {
+                        backgroundColor: "#008300"
+                    }
+
                 }
-            }
-            if(frequency>0.9){
-                return {
-                    backgroundColor: "green"
+                else{
+                    return {
+                        backgroundColor: "green"
+                    }
                 }
             }
         }
 
     return(
-        <td onClick={() => toggleTitle()} className="bmt-line" style={loadFreqData(props.activeAnnotationScheme,props.pos,props.seqpos)}>
+        <td onClick={() => {props.handleMutation([props.pos, props.aa])}} 
+            className="bmt-line" style={loadFreqData(props.activeAnnotationScheme,props.pos,props.aa)}
+        >
             {title}
         </td>
     )

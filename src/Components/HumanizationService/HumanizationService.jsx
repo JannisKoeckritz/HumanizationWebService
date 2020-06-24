@@ -36,7 +36,11 @@ class HumanizationService extends Component {
 
         //Backmutation
         templateData: null,
-        hybridData: null
+        hybridData: null,
+        modified: [],
+
+        //Download
+        toDownload: []
     }
 
     handleNext = (oldStepIndex) => {
@@ -55,7 +59,7 @@ class HumanizationService extends Component {
     }
 
     handleReset = () => {
-        this.setState({activeStep:0})
+        window.location.reload()
     }
 
     setSequence = (seqString) => {
@@ -124,7 +128,7 @@ class HumanizationService extends Component {
                 showAlert: false
             })
 
-        },3000)
+        },3500)
     }
 
     checkInputSequence = (seq) => {
@@ -132,9 +136,40 @@ class HumanizationService extends Component {
         return seq
     }
 
+
+    getMutatedSequences = (mutations) => {
+        this.setState({
+            modified: mutations
+        })
+    this.handleNext(this.state.activeStep)
+}
+
+    addToDownloads = (downloadItem) => {
+        if(!this.state.toDownload.includes(downloadItem)){
+            this.setState(prevState => ({
+                toDownload: [...prevState.toDownload, downloadItem]
+                }))
+                console.log("Added")
+        }
+        else{
+            console.log("Already added")
+        }
+    }
+
+    removeFromDownloads = (downloadItem) => () => {
+        let updatedDownloads = this.state.toDownload.filter((element) => element !== downloadItem);
+        this.setState({
+            toDownload: updatedDownloads
+        })
+        console.log("Removed")
+      };
+
+    
+
+
     createAnnotation = async (seq) => {
         this.setState({
-            loadingMessage:"Creating annotation",
+            loadingMessage:"Annotating",
             isFetching:true,
         })
         seq = this.checkInputSequence(seq)
@@ -178,7 +213,7 @@ class HumanizationService extends Component {
 
     submitBlast = async () => {
         this.setState({
-            loadingMessage:"Searching in Blast database",
+            loadingMessage:"Searching for similar sequences in BLAST database",
             isFetching:true,
             sendBlast: true
         })
@@ -290,6 +325,41 @@ class HumanizationService extends Component {
         }
     }
 
+    selectSequencesForDownload = async() => {
+        this.setState({isFetching:true})
+        const response = await fetch("http://localhost:3000/export",
+        {
+            method:"POST",
+            headers:{
+            "Accept":"application/json, text/plain",
+            "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                "sequences": this.state.toDownload,
+                "job_id": this.state.job_id
+            })
+
+        })
+        if(![201,200].includes(response.status)){
+            this.setState({
+                isFetching:false,
+                alertType: "error",
+                alertMessage: `${response.status} - ${response.statusText}`,
+                showAlert: true
+            })
+        } else {
+            this.setState({
+                isFetching:false,
+                alertType: "success",
+                alertMessage: "Created FASTA successfully!",
+                showAlert: true
+            })
+        }
+        this.downloadFile()
+        this.handleNext(this.state.activeStep)
+    }
+    
+
     downloadFile = async() => {
         this.setState({isFetching: true});
         let fetch_url = `http://localhost:3000/export/${this.state.job_id}`
@@ -319,39 +389,6 @@ class HumanizationService extends Component {
         }
     }
 
-    selectSequencesForDownload = async() => {
-        this.setState({isFetching:true})
-        const response = await fetch("http://localhost:3000/export",
-        {
-            method:"POST",
-            headers:{
-            "Accept":"application/json, text/plain",
-            "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                "sequences": [{"id": "dfb7d39-389dh389d-dg3-33d", "seq": "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"},{"id": "dfb7d39-389dh389d-dg3-33d", "seq": "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"}],
-                "job_id": this.state.job_id
-            })
-
-        })
-        if(![201,200].includes(response.status)){
-            this.setState({
-                isFetching:false,
-                alertType: "error",
-                alertMessage: `${response.status} - ${response.statusText}`,
-                showAlert: true
-            })
-        } else {
-            this.setState({
-                isFetching:false,
-                alertType: "success",
-                alertMessage: "Created FASTA successfully!",
-                showAlert: true
-            })
-        }
-    }
-    
-
     render(){
         return(
             <div className="contentContainer">
@@ -360,6 +397,7 @@ class HumanizationService extends Component {
                     {...this.state}
                     next={() => {this.handleNext(this.state.activeStep)}}
                     back={() => {this.handleBack(this.state.activeStep)}}
+                    reset={() => {this.handleReset()}}
                     createAnnotation={() => {this.createAnnotation(this.state.querySequence)}}
                     seqChangeHandler={(seq) => this.setSequence(seq)}
                     toggleGermline={this.toggleGermline}
@@ -370,7 +408,10 @@ class HumanizationService extends Component {
                     deleteTemplate={this.deleteTemplate}
                     resetTemplates={this.resetTemplates}
                     replaceCDR={this.replaceCDR}
+                    getMutatedSequences={this.getMutatedSequences}
                     downloadFile={this.downloadFile}
+                    removeFromDownloads={this.removeFromDownloads}
+                    addToDownloads={this.addToDownloads}
                     />
                 <ServiceNavigation
                     {...this.state}

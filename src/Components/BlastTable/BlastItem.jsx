@@ -14,6 +14,11 @@ const blastItem = (props) => {
                     add_circle
                 </Icon>
         )
+        if(props.templateIDs.length >= 1){
+            btn=(
+                <Icon style={{ color: "#004777", fontSize:30 }}>clear</Icon>
+                )
+        }
 
     }
 
@@ -43,7 +48,8 @@ const blastItem = (props) => {
     return(
         <li className="blast-table-item" style={setBackground(props.percent)}>
             <div className="blast-table-row blast-table-index">{props.index}</div>
-            <div className="blast-table-row blast-table-seq">{props.seq_id}</div>
+            <div className="blast-table-row blast-table-index">0</div>
+            {/* <div className="blast-table-row blast-table-seq">{props.seq_id}</div> */}
             <div className="blast-table-row blast-table-percent blast-table-percent-bold">{props.percent}</div>
             <div className="blast-table-row blast-table-evalue">{props.evalue}</div>
             <div className="blast-table-row blast-table-bitscore blast-table-bitscore-bold">{props.bitscore}</div>

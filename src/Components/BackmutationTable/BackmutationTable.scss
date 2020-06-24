@@ -9,6 +9,7 @@
     }
     td{
         width:11px;
+        min-width: 1rem;
         padding:1.2px;
         text-align: center;
         box-sizing: border-box;
@@ -17,9 +18,10 @@ border: none;    }
 
 .bmt-line {
     position: relative;
-    min-width: 0.5rem;
+    min-width: 1rem;
     &:hover{
         cursor: pointer;
+        border: 2px solid black;
     }
     &:hover::before { 
         background-color: rgb(138, 138, 138);
@@ -40,6 +42,10 @@ border: none;    }
         width: 100%;
         z-index: -1;        
     }
+}
+
+.bmt-mutated{
+    border: 4px solid black;
 }
 
 .bmt-source, .bmt-target{

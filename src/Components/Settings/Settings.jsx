@@ -11,16 +11,11 @@ export default class Settings extends Component {
         options: [  {"name": "Scheme 1", "value":"1"} ,
                     {"name": "Zappo", "value":"2"},
                     {"name": "Scheme 3", "value":"3"},
-                    {"name": "Taylor", "value":"4"}],
-        threshold: [5,10]
+                    {"name": "Taylor", "value":"4"}]
     }
 
     render(){
         const options = this.state.options
-        
-        const handleChange = (event, newValue) => {
-        this.setState({threshold: newValue})
-        };
 
         const thresholdText = (value) => {
             return `${value}%`
@@ -87,7 +82,7 @@ export default class Settings extends Component {
                             </select>
                         </span>
                     </div>
-                    <div className="settings-item settings-item__less-margin">
+                    {/* <div className="settings-item settings-item__less-margin">
                         <span className="settings-item-label">
                             Threshold:
                         </span>
@@ -108,16 +103,21 @@ export default class Settings extends Component {
                                     const { value } = event.target;
                                     this.props.setThreshold(event, updateThreshold((value, 1)))}}
                             />
+                        </span>
+                    </div> */}
+                    <div className="settings-item">
+                        <span className="settings-item-label">
+                                Thresholds:
                             </span>
-                    </div>
-                    <div className="settings-item settings-item-slider">
-                        <Slider
-                            value={this.props.threshold}
-                            onChange={this.props.setThreshold}
-                            valueLabelDisplay="off"
-                            aria-labelledby="range-slider"
-                            getAriaValueText={thresholdText}
-                        />
+                        <div className="settings-item settings-item-slider">
+                            <Slider
+                                value={this.props.threshold}
+                                onChange={this.props.setThreshold}
+                                valueLabelDisplay="on"
+                                aria-labelledby="range-slider"
+                                getAriaValueText={thresholdText}
+                            />
+                        </div>
                     </div>
                 </div>
 

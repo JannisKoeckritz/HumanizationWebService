@@ -14,7 +14,7 @@ class TableHead extends Component{
         const items = []
         for(const[index, value] of this.state.line.entries()){
             items.push(
-                <td className="bmt-line">
+                <td key={index} className="bmt-line">
                     {value}
                 </td>
             )

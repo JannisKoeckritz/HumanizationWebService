@@ -5,6 +5,7 @@ import Spinner from '../Loading/Loading';
 import BlastTable from '../BlastTable/BlastTable';
 import BackmutationContainer from '../BackmutationTable/BackmutationContainer';
 import Export from '../Export/Export';
+import Finish from '../Finish/Finish';
 
 
 const contentManager = (props) => {
@@ -58,7 +59,11 @@ const contentManager = (props) => {
                 activeAnnotationScheme={props.activeAnnotationScheme}
                 changeAnnotation={props.changeAnnotation}
                 threshold={props.threshold}
-                setThreshold={props.setThreshold} 
+                setThreshold={props.setThreshold}
+                modified={props.modified}
+                getMutatedSequences={props.getMutatedSequences}
+                threshold={props.threshold}
+                setThreshold={props.setThreshold}
             />
         )
     }
@@ -66,7 +71,20 @@ const contentManager = (props) => {
     if(props.activeStep===4){        
         content=(
             <Export
-                downloadFile={props.downloadFile}/>
+                downloadFile={props.downloadFile}
+                mutations={props.modified}
+                downloads={props.toDownload}
+                addToDownloads={props.addToDownloads}
+                removeFromDownloads={props.removeFromDownloads}
+            />
+        )
+    }
+
+    if(props.activeStep===5){
+        content=(
+            <Finish
+                handleReset={props.reset}
+            />
         )
     }
 

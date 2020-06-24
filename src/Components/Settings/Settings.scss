@@ -10,11 +10,15 @@
     align-items: center;
     flex-wrap: wrap;
     align-content: space-between;
+    color: var(--color-1);
 
     &-item{
-        display: inline-block;
+        display: flex;
+        flex-direction: row;
         margin: 0.4rem 1.5rem;
         align-self: center;
+        align-items: center;
+        justify-content: center;
         min-width: 400px;
 
         &__less-margin{
@@ -22,9 +26,10 @@
         }
 
         &-label{
-            font-family: "Monserrat", sans-serif;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             margin: 0 5px;
             height: 30px;
+            font-weight: bold;
         }
 
         &-selector{
@@ -36,8 +41,8 @@
                 width: 8rem;
                 min-width: 30px;
                 height: 30px;
-                color: #000;
-                font-family: 'Monserrat', sans-serif;
+                color: var(--color-1);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
                 font-size: 16px;
                 border-radius: 3px;
                 background-color: #f4f4f4;
@@ -51,7 +56,7 @@
         &-slider{
             align-self: center;
             min-width: 200px;
-            width: 3rem;
+            width: 11rem;
             //padding: 5px;
         }
 
@@ -61,7 +66,7 @@
             input {
                 appearance: none;
                 box-shadow: none;
-                font-family: 'Monserrat', sans-serif;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
                 margin: 5px;
                 height: 30px;
                 max-width: 50px;
@@ -83,5 +88,30 @@
     color: var(--grey-2);
 }
 .MuiSlider-track{
-    color: red;
+    color: var(--color-5);
 }
+
+.MuiSlider-thumb{
+    color: var(--color-1);
+    font-size: 1.5rem;
+}
+
+.MuiSlider-valueLabel{
+    font-size: 1.5rem;
+}
+
+.MuiSlider-markLabel{
+    font-size: 1.5rem;
+}
+
+@media all and (max-width: 1000px) {
+    .settings {
+        flex-direction: column;
+        align-items: flex-start;
+        &-item{
+            width: 100%;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+    }
+  }

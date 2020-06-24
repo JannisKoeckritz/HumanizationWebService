@@ -22,13 +22,14 @@ const serviceNavigation = (props) => {
                     Back
                     </button>
             }
-            {
-                props.activeStep >=3 && props.activeStep <=4 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={props.next}>
-                    {nextLabel}
-                    <Icon >chevron_right</Icon>
+            {/* {
+                props.activeStep >=3 && props.activeStep <=4 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={() => {
+                    props.getMutatedSequences();
+                }}>
+                    Select for export
                     
                     </button>
-            }
+            } */}
             {
                 props.activeStep ===1 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={() => {
                     if(!props.blastResults){
@@ -39,12 +40,8 @@ const serviceNavigation = (props) => {
             }
             {
                 props.activeStep===2 && <button className="btn btn__service btn__service__next" onClick={() => {
-                    if(!props.templateData){
                         props.loadTemplates();
-
-                    }else{
-                        props.next()
-                    }}}>Backmutation</button>
+                    }}>Backmutation</button>
                 }
             {
                 props.activeStep===4 && <button className="btn btn__service btn__service__next" onClick={() => {
