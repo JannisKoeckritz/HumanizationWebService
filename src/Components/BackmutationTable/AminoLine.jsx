@@ -37,7 +37,7 @@ class AminoLine extends Component{
         
         return(
             <tr>
-                <td className="bmt-line" style={{minWidth:"55px",textAlign:"left",fontWeight:"bold",padding:"1px 15px" }}>
+                <td className="bmt-line" style={{minWidth:"75px",textAlign:"left",fontWeight:"bold",padding:"1px 15px" }}>
                     {this.props.title}
                 </td>
                 {items}

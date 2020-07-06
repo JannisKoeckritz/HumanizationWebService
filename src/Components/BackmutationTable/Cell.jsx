@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import {frequency_data} from '../../data/frequency';
+import {common_as_data} from '../../data/frequency';
 
 const cellItem = (props) => {
 
-    //console.log(props)
-    const [title, setTitle] = useState("")
-
-    const toggleTitle = () =>{
-        if(title===""){
-            setTitle(props.aa.toLowerCase())
-        }else{
-            setTitle("")
-        }
-    }
-
-    const getChainType = (ct) => {
+    const getChainType = () => {
         if(props.chain_type.includes("eav")){
             return "heavy"
         }else{
@@ -27,17 +17,18 @@ const cellItem = (props) => {
     const loadFreqData = (anntotationScheme, pos, aa) => {
         const frequency = frequency_data[anntotationScheme][getChainType()][pos][aa]
         //console.log(frequency);
-        console.log(frequency, props.threshold)
             if(frequency<=props.threshold[0]/100){
                 if(props.cdr==="1"){
                     return {
-                        backgroundColor: "#9b0000"
+                        backgroundColor: "#9b0000",
+                        color: 'white'
                     }
 
                 }
                 else{
                     return {
-                        backgroundColor: "red"
+                        backgroundColor: "red",
+                        color: 'white'
                     }
                 }
 
@@ -45,36 +36,42 @@ const cellItem = (props) => {
             if(frequency>props.threshold[0]/100&&frequency<=props.threshold[1]/100){
                 if(props.cdr==="1"){
                     return {
-                        backgroundColor: "#9f9f00"
+                        backgroundColor: "#ACACAC",
+                        color: 'black'
                     }
 
                 }
                 else{
                     return {
-                        backgroundColor: "yellow"
+                        backgroundColor: "#F2F2F2",
+                        color: 'black'
                     }
                 }
             }
             if(frequency>props.threshold[1]/100){
                 if(props.cdr==="1"){
                     return {
-                        backgroundColor: "#008300"
+                        backgroundColor: "#2a3746",
+                        color: 'white'
                     }
 
                 }
                 else{
                     return {
-                        backgroundColor: "green"
+                        backgroundColor: "#004777",
+                        color: 'white'
                     }
                 }
             }
         }
-
+    
     return(
         <td onClick={() => {props.handleMutation([props.pos, props.aa])}} 
             className="bmt-line" style={loadFreqData(props.activeAnnotationScheme,props.pos,props.aa)}
         >
-            {title}
+            <span className="bmt-line-title">
+            { common_as_data[props.activeAnnotationScheme][getChainType()][props.pos]===props.aa?<span>*</span>:null }
+            </span>
         </td>
     )
 }

@@ -12,27 +12,30 @@ class MutationLine extends Component{
 
     }
 
-
     loadFreqData = (anntotationScheme, pos, aa) => {
         const frequency = frequency_data[anntotationScheme][this.getChainType()][pos][aa]
         //console.log(frequency);
-        
-            if(frequency<=0.05){
-                return {
-                    backgroundColor: "red"
-                }
+            if(frequency<=this.props.threshold[0]/100){
+                    return {
+                        backgroundColor: "red",
+                        color: 'white'
+                    }
             }
-            if(frequency>0.05&&frequency<=0.75){
-                return {
-                    backgroundColor: "yellow"
-                }
+            if(frequency>this.props.threshold[0]/100&&frequency<=this.props.threshold[1]/100){
+                    return {
+                        backgroundColor: "#F2F2F2",
+                        color: 'black'
+                    }
             }
-            if(frequency>0.75){
-                return {
-                    backgroundColor: "green"
-                }
+            if(frequency>this.props.threshold[1]/100){
+                    return {
+                        backgroundColor: "#004777",
+                        color: 'white'
+                    }
             }
         }
+
+
 
     render () {
         const items = []
@@ -57,7 +60,7 @@ class MutationLine extends Component{
         return(
             <thead>
             <tr>
-            <td className="bmt-line" style={{minWidth:"55px",textAlign:"left",fontWeight:"bold",padding:"1px 15px" }}>
+            <td className="bmt-line" style={{minWidth:"75px",textAlign:"left",fontWeight:"bold",padding:"1px 15px" }}>
                 {this.props.title}
             </td>
                 {items}
