@@ -32,11 +32,8 @@ const serviceNavigation = (props) => {
             } */}
             {
                 props.activeStep ===1 && props.querySequenceData && <button className="btn btn__service btn__service__next" onClick={() => {
-                    if(!props.blastResults){
-                        props.submitBlast();}
-                    else{
-                        props.next()
-                    }}}>Blast</button>
+                        props.submitBlast();
+                }}>Blast</button>
             }
             {
                 props.activeStep===2 && <button className="btn btn__service btn__service__next" onClick={() => {

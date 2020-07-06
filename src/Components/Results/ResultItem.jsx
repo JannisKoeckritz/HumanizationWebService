@@ -35,7 +35,7 @@ const resultItem = (props) => {
                             <Popover.Title as="h3">
                                 {props.meta.chain_type[0].toUpperCase()+props.data.pos} - {props.data.amino_acid} 
                                 <small style={{marginRight:"10px"}}> ({translateAA(props.data.amino_acid)})</small>
-                                {props.data.frequency < 0.1 ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}    
+                                {(props.data.frequency >= props.threshold[0]/100) && (props.data.frequency <= props.threshold[1]/100) ? <span className="rare_indicator"></span>:<span className="indicator_empty"></span>}    
                             </Popover.Title>
                             <Popover.Content>
                                 <div className="popover-flexbox">

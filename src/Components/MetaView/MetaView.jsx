@@ -15,8 +15,8 @@ const metaView = (props) => {
     props.meta.regions[props.activeAnnotationScheme].map((item, index) => {
         regions.push(
             <div key={index} className="mv__line">
-                <div className="mv__line__title" style={{width: "25%"}}>{item.region}</div>
-                <div className="mv__line__description" style={{width: "55%", textAlign:"left"}}>{item.sequence_fragment}</div>
+                <div className="mv__line__title" style={{width: "15%"}}>{item.region}</div>
+                <div className="mv__line__description" style={{width: "65%", textAlign:"left"}}>{item.sequence_fragment}</div>
                 <div className="mv__line__description" style={{width: "15%"}}>{item.residue}</div>
                 <div className="mv__line__description" style={{width: "5%"}}>{item.length}</div>
             </div>)

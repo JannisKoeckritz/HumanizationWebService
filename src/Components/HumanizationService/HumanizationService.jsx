@@ -3,6 +3,7 @@ import ProgressBar from '../Progress/Progress';
 import ContentManager from '../ContentManager/ContentManager';
 import ServiceNavigation from '../ServiceNavigation/ServiceNavigation';
 import AlertBar from '../Alert/Alert';
+import validator from 'validator';
 
 class HumanizationService extends Component {
 
@@ -28,7 +29,7 @@ class HumanizationService extends Component {
         meta:null,
         chain_type:null,
         activeAnnotationScheme:'kabat',
-        threshold: [0,2],
+        threshold: [0,10],
 
         // Blast
         blastResults : null,
@@ -40,7 +41,7 @@ class HumanizationService extends Component {
         modified: [],
 
         //Download
-        toDownload: []
+        toDownload: {}
     }
 
     handleNext = (oldStepIndex) => {
@@ -70,7 +71,7 @@ class HumanizationService extends Component {
 
     loadExample = () => {
         this.setState({
-            querySequence: "GESLKISCAASGLSCSSHWMSWVRQAPGKGLEWVADINHDGSEKHYVDSVKGRFTISRDNAKNSVYLQMNTLRAEDTAVYYCARESGIVGASRGWDFDYWGQGTLVTVSS"
+            querySequence: "QVQLKESGPGLVQPSETLSLTCTVSGFSLTTYSVSWVRQPSGKGPEWMGRMWYDGDTVYNSALKSRLSISRDTSKNQVFLKMNSLETDETGTYYCTRDFGYFDGSSPFDYWGQGVMVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
         })
     }
 
@@ -144,6 +145,12 @@ class HumanizationService extends Component {
     this.handleNext(this.state.activeStep)
 }
 
+    setDownloads = (downloadObj) => {
+        this.setState({
+            toDownload: downloadObj
+        })
+    }
+
     addToDownloads = (downloadItem) => {
         if(!this.state.toDownload.includes(downloadItem)){
             this.setState(prevState => ({
@@ -163,6 +170,24 @@ class HumanizationService extends Component {
         })
         console.log("Removed")
       };
+    
+    prepareForDownload = (downloadObj) => {
+        console.log(downloadObj)
+        let downloadArray = []
+        Object.keys(downloadObj).map( downloadId => {
+            const identifier = downloadId
+            const sequence = downloadObj[downloadId]
+            downloadArray.push({
+                'id': identifier,
+                'seq': sequence
+            }
+
+            )
+
+        })
+        console.log("ARRAY TO DOWNLOAD",downloadArray)
+        return downloadArray
+    }
 
     
 
@@ -258,6 +283,8 @@ class HumanizationService extends Component {
             loadingMessage:"Loading template data",
             isFetching:true
         })
+        let is_somatic = validator.isUUID(this.state.templateIDs[0])
+        console.log("is_somatic",is_somatic)
         const response = await fetch("http://localhost:3000/templates",
         {
             method:"POST",
@@ -266,7 +293,8 @@ class HumanizationService extends Component {
             "Content-Type": 'application/json'
             },
             body: JSON.stringify({
-                "templateIDs":this.state.templateIDs})
+                "templateID":this.state.templateIDs,
+                "somatic": is_somatic})
         })
         if(![201,200].includes(response.status)){
             this.setState({
@@ -327,6 +355,8 @@ class HumanizationService extends Component {
 
     selectSequencesForDownload = async() => {
         this.setState({isFetching:true})
+        let downloadData = this.prepareForDownload(this.state.toDownload)
+        console.log("downloadData", downloadData)
         const response = await fetch("http://localhost:3000/export",
         {
             method:"POST",
@@ -335,7 +365,7 @@ class HumanizationService extends Component {
             "Content-Type": 'application/json'
             },
             body: JSON.stringify({
-                "sequences": this.state.toDownload,
+                "sequences": downloadData,
                 "job_id": this.state.job_id
             })
 
@@ -407,11 +437,11 @@ class HumanizationService extends Component {
                     addTemplate={this.addTemplate}
                     deleteTemplate={this.deleteTemplate}
                     resetTemplates={this.resetTemplates}
+                    loadTemplates={this.loadTemplates}
                     replaceCDR={this.replaceCDR}
                     getMutatedSequences={this.getMutatedSequences}
                     downloadFile={this.downloadFile}
-                    removeFromDownloads={this.removeFromDownloads}
-                    addToDownloads={this.addToDownloads}
+                    setDownloads={this.setDownloads}
                     />
                 <ServiceNavigation
                     {...this.state}

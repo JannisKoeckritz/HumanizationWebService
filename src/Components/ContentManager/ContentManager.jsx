@@ -20,6 +20,7 @@ const contentManager = (props) => {
                 querySequence={props.querySequence}
                 toggleGermline={props.toggleGermline}
                 loadExample={props.loadExample}
+                germline={props.germline}
             />
         )
     }
@@ -46,6 +47,7 @@ const contentManager = (props) => {
                 resetTemplates={props.resetTemplates}
                 templateIDs={props.templateIDs}
                 replaceCDR={props.replaceCDR}
+                loadTemplates={props.loadTemplates}
             />
         )
     }
@@ -74,8 +76,7 @@ const contentManager = (props) => {
                 downloadFile={props.downloadFile}
                 mutations={props.modified}
                 downloads={props.toDownload}
-                addToDownloads={props.addToDownloads}
-                removeFromDownloads={props.removeFromDownloads}
+                setDownloads={props.setDownloads}
             />
         )
     }

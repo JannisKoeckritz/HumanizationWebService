@@ -8,15 +8,20 @@ const blastTable = (props) => {
         <div className="page-box">
             <h2 className="page-title">Select template</h2>
             <div className="page-information">This list shows the best blast hits in our database. Please select one template.</div>
-            <div className="blast-selector-container">
+            <div className="blast-subcontainer">
                 <BlastSelector {...props}/>
+            {
+                props.templateIDs.length>=1&& <button className="btn" onClick={() => {
+                    props.loadTemplates();
+                }}>Backmutation</button>
+            }
             </div>
             <div className="blast-table-container">
                 <ul className="blast-table">
                     <li className="blast-heading blast-heading-top">
                         <div className="blast-table-heading blast-table-index">Index</div>
                         <div className="blast-table-heading blast-table-index">Germline</div>
-                        {/* <div className="blast-table-heading blast-table-seq">Sequence-ID</div> */}
+                        <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
                         <div className="blast-table-heading blast-table-percent">Identity [%]</div>
                         <div className="blast-table-heading blast-table-evalue">E-value</div>
                         <div className="blast-table-heading blast-table-bitscore">Bitscore</div>
@@ -27,20 +32,22 @@ const blastTable = (props) => {
                     {props.blastResults &&
                         props.blastResults.data.map((entry, index) => {
                             const splitted = entry.split("\t")
-                            //const job_id = splitted[0]
-                            const seq_id = splitted[1]
-                            const percent = splitted[2]
-                            // const length = splitted[3]
+                            const germline = splitted[0]!="N/A"?splitted[0]:"no"
+                            const query_id = splitted[1]
+                            const name = splitted[2]
+                            const identity = splitted[3]
+                            // const length = splitted[4]
                             // const mismatch = splitted[4]
-                            const evalue = splitted[10]
-                            const bitscore = splitted[11]
+                            const evalue = splitted[12]
+                            const bitscore = splitted[13]
 
                             return (
                                 <BlastItem
-                                    key={seq_id}
+                                    key={name}
                                     index={index}
-                                    seq_id={seq_id}
-                                    percent={percent}
+                                    name={name}
+                                    germline={germline}
+                                    identity={identity}
                                     evalue={evalue}
                                     bitscore={bitscore}
                                     addTemplate={props.addTemplate}
@@ -52,7 +59,7 @@ const blastTable = (props) => {
                     <li className="blast-heading">
                         <div className="blast-table-heading blast-table-index">Index</div>
                         <div className="blast-table-heading blast-table-index">Germline</div>
-                        {/* <div className="blast-table-heading blast-table-seq">Sequence-ID</div> */}
+                        <div className="blast-table-heading blast-table-seq">Sequence-ID</div>
                         <div className="blast-table-heading blast-table-percent">Identity [%]</div>
                         <div className="blast-table-heading blast-table-evalue">E-value</div>
                         <div className="blast-table-heading blast-table-bitscore">Bitscore</div>

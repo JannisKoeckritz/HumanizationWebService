@@ -7,10 +7,10 @@ const blastItem = (props) => {
 
 
     let btn = null;
-    if(!props.templateIDs.includes(props.seq_id)){
+    if(!props.templateIDs.includes(props.name)){
         btn=(
                 <Icon   style={{ color: "#004777", fontSize:35, cursor:"pointer" }}
-                        onClick={() => props.addTemplate(props.seq_id)}>
+                        onClick={() => props.addTemplate(props.name)}>
                     add_circle
                 </Icon>
         )
@@ -46,11 +46,11 @@ const blastItem = (props) => {
     }
     
     return(
-        <li className="blast-table-item" style={setBackground(props.percent)}>
+        <li className="blast-table-item">
             <div className="blast-table-row blast-table-index">{props.index}</div>
-            <div className="blast-table-row blast-table-index">0</div>
-            {/* <div className="blast-table-row blast-table-seq">{props.seq_id}</div> */}
-            <div className="blast-table-row blast-table-percent blast-table-percent-bold">{props.percent}</div>
+            <div className="blast-table-row blast-table-germline">{props.germline}</div>
+            <div className="blast-table-row blast-table-seq">{props.name}</div>
+            <div className="blast-table-row blast-table-percent blast-table-percent-bold">{props.identity}</div>
             <div className="blast-table-row blast-table-evalue">{props.evalue}</div>
             <div className="blast-table-row blast-table-bitscore blast-table-bitscore-bold">{props.bitscore}</div>
             <div className="blast-table-row blast-table-add">

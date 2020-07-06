@@ -47,6 +47,7 @@ const sequnceForm = (props) => {
             <ColorCheckBox
                 onChange={() => props.toggleGermline()}
                 name="germline-validation"
+                checked={props.germline}
             />
             }
             label="Use germline sequences only"

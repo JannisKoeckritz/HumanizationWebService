@@ -5,22 +5,46 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
 class Export extends Component{
+    state = {
+        selected: {}
+    }
 
-    
-    toggleMutation = (mutationItem) => {
-        let existsAlready = []
-        this.props.downloads.forEach(mutation => {
-            existsAlready.push(mutation.id)
-        })
-        if(existsAlready.includes(mutationItem.id)){
-            this.props.removeFromDownloads(mutationItem)
+    updateSelected = (mutationItem) => {
+        
+        let newSelect = this.props.downloads
+
+        if(Object.keys(this.props.downloads).includes(Object.keys(mutationItem)[0])){
+            delete newSelect[Object.keys(mutationItem)[0]]
+            this.props.setDownloads(newSelect)
         }
         else{
-            this.props.addToDownloads(mutationItem)
+            newSelect[Object.keys(mutationItem)[0]] = Object.values(mutationItem)[0]
+            this.props.setDownloads(newSelect)
         }
     }
+
+    clearSelected = () => {
+        this.setState({
+            selected: []
+        })
+    }
+
+    componentDidMount(){
+        this.props.setDownloads({})
+    }
+    
+    // toggleMutation = (mutationItem) => {
+    //     if(existsAlready.includes(mutationItem.id)){
+    //         this.props.removeFromDownloads(mutationItem)
+    //     }
+    //     else{
+    //         this.props.addToDownloads(mutationItem)
+    //     }
+    // }
     
     render(){
+        console.log(this.props, this.state);
+        
         const ColorCheckBox = withStyles({
             root: {
             color: "#004777",
@@ -30,15 +54,21 @@ class Export extends Component{
             },
         })((props) => <Checkbox color="default" {...props} />);
         let items = []
-        this.props.mutations.map(mutationItem => {
-            const identifier = mutationItem['id']
-            const sequence = mutationItem['seq']
+        Object.keys(this.props.mutations).map(mutationItem => {
+            console.log()
+            const identifier = mutationItem
+            const sequence = this.props.mutations[mutationItem]
             items.push(
                 <FormControlLabel
                     control={
                     <ColorCheckBox
-                        onChange={() => this.toggleMutation(mutationItem)}
+                        onChange={() => {
+                            let returnObj = {}
+                            returnObj[mutationItem] = sequence
+                            this.updateSelected(returnObj)
+                        }}
                         name="germline-validation"
+                        checked={Object.keys(this.props.downloads).includes(identifier)?true:false}
                     />
                     }
                     label={`${identifier}: ${sequence}`}
