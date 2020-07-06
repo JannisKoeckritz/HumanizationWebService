@@ -14,7 +14,8 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
-    "react-vis": "^1.11.7"
+    "react-vis": "^1.11.7",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",
